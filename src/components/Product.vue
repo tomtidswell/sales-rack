@@ -1,8 +1,10 @@
 <template>
   <div class="product">
     <a :href="url" class="name">{{name}}</a>
+    <img class="main" :src="image" >
     <div class="prices">{{prices}}</div>
     <div class="badge">{{badge}}</div>
+    <img alt="Set of 5 Printed Tea Towels" class="product__image--hover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"/>
   </div>
 </template>
 
@@ -31,6 +33,9 @@ export default {
     },
     badge: function () {
       return this.data.badge
+    },
+    image: function () {
+      return this.data.images[0].source
     }
   }
 }
@@ -42,7 +47,7 @@ export default {
   position:relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 10px 10px 14px 0px #d6c2c266, -10px -10px 14px 0px #fff8f8bd;
+  box-shadow: 10px 10px 14px 0px #d6c2c266, -10px -10px 14px 0px #fff8f873;
   border-radius: 10px;
   padding: 10px;
 }
@@ -59,6 +64,10 @@ li {
 }
 a {
   color: #42b983;
+}
+img.main{
+  width: 100%;
+  object-fit: contain;
 }
 .badge{
   background-color: red;
