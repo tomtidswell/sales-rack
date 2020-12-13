@@ -1,14 +1,18 @@
 <template>
-  <div class="product">
+  <div class="product" v-show="lastSeen !== 'Not recently'">
     <a :href="url" class="name">{{name}}</a>
     <img class="main" :src="image" >
-    <div class="prices">{{prices}}</div>
+    <div class="prices">
+        {{salePrice}}
+        <span class="prices previous-price" v-if="prevPrice">{{prevPrice}}</span>
+    </div>
     <div class="badge">{{badge}}</div>
-    <img alt="Set of 5 Printed Tea Towels" class="product__image--hover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"/>
+    <div>⏱{{lastSeen}}</div>
   </div>
 </template>
 
 <script>
+import {timeDiffToNow} from '../../lib/time'
 export default {
   name: 'Products',
   props: {
@@ -21,21 +25,14 @@ export default {
   },
   computed: {
     // a computed getter
-    name: function () {
-      // `this` points to the vm instance
-      return this.data.name
-    },
-    prices: function () {
-      return this.data.prices.join(' ')//.replace('Previous price', "")
-    },
-    url: function () {
-      return this.data.url
-    },
-    badge: function () {
-      return this.data.badge
-    },
-    image: function () {
-      return this.data.images[0].source
+    name: function () { return this.data.name },
+    salePrice: function () { return this.data.sale_price },
+    prevPrice: function () { return this.data.prev_price },
+    url: function () { return this.data.url },
+    badge: function () { return this.data.badge },
+    image: function () { return this.data.main_image },
+    lastSeen: function () { 
+        return timeDiffToNow(this.data.updatedAt)
     }
   }
 }
@@ -68,6 +65,14 @@ a {
 img.main{
   width: 100%;
   object-fit: contain;
+}
+.prices{
+        display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.previous-price{
+    text-decoration: line-through;
 }
 .badge{
   background-color: red;

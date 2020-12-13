@@ -7,7 +7,11 @@ module.exports = {
       headers: { "Access-Control-Allow-Origin": "*" }
     }
   },
-  devServer: { proxy: "http://localhost:4000/api", headers: { "Access-Control-Allow-Origin": "*" }},
+  devServer: {
+    proxy: "http://localhost:4000/api",
+    headers: { "Access-Control-Allow-Origin": "*" },
+    https: false,
+  },
   pages: {
     index: {
       // entry for the page

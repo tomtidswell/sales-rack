@@ -2,7 +2,8 @@
   <div id="app">
     <header>SaleRack</header>
     <main>
-      <Products msg="Welcome to Your Vue.js App"/>
+        <Filters />
+        <Products msg="Welcome to Your Vue.js App"/>
     </main>
     <footer>Shop footer</footer>
   </div>
@@ -10,11 +11,12 @@
 
 <script>
 import Products from './components/Products.vue'
+import Filters from './components/Filters.vue'
 
 export default {
   name: 'App',
   components: {
-    Products
+    Products, Filters
   }
 }
 </script>

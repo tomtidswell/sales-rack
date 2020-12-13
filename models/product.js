@@ -7,8 +7,13 @@ const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   url: { type: String, required: true, unique: true },
   prices: { type: Array },
+  prev_price: { type: String },
+  sale_price: { type: String },
   badge: { type: String },
-  image: { type: String },
+  main_image: { type: String },
+  hover_image: { type: String },
+  images: { type: Array },
+  source: { type: String },
 }, { timestamps: true })
 
 //this package enhances the validation made against the schema for unique entries, and it makes it more like the other types of schema validation
