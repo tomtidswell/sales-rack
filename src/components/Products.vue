@@ -57,7 +57,7 @@ a {
 }
 .grid{
   display: grid;
-  grid-template-columns: repeat(5,1fr);
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
   grid-gap: 20px;
   padding: 0 20px;
 }

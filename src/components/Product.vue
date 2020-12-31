@@ -1,13 +1,14 @@
 <template>
   <div class="product" v-show="lastSeen !== 'Not recently'">
     <a :href="url" class="name">{{name}}</a>
+    <div class="line"></div>
     <img class="main" :src="image" >
     <div class="prices">
         {{salePrice}}
         <span class="prices previous-price" v-if="prevPrice">{{prevPrice}}</span>
     </div>
     <div class="badge">{{badge}}</div>
-    <div>⏱{{lastSeen}}</div>
+    <div class="last-seen">⏱{{lastSeen}}</div>
   </div>
 </template>
 
@@ -41,33 +42,44 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .product{
-  position:relative;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 10px 10px 14px 0px #d6c2c266, -10px -10px 14px 0px #fff8f873;
-  border-radius: 10px;
-  padding: 10px;
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 10px 14px 0px #9a9a9a40, -10px -10px 14px 0px #fff8f836;
+    border-radius: 5px;
+    padding: 10px;
+    backdrop-filter: blur(7px);
+    background-color: #ffffff;
+    color: #546E7A;
 }
 h3 {
-  margin: 40px 0 0;
+    margin: 40px 0 0;
 }
 ul {
-  list-style-type: none;
-  padding: 0;
+    list-style-type: none;
+    padding: 0;
 }
 li {
-  display: inline-block;
-  margin: 0 10px;
+    display: inline-block;
+    margin: 0 10px;
 }
 a {
-  color: #42b983;
+    text-decoration: none;
+    color: #546E7A;
 }
 img.main{
-  width: 100%;
-  object-fit: contain;
+    width: 100%;
+    object-fit: contain;
+}
+.line{
+    height: 1px;
+    width: 80%;
+    margin: 10px;
+    background: #d0d9e0;
+    align-self: center;
 }
 .prices{
-        display: flex;
+    display: flex;
     align-items: center;
     justify-content: flex-end;
 }
@@ -75,11 +87,16 @@ img.main{
     text-decoration: line-through;
 }
 .badge{
-  background-color: red;
-  position: absolute;
-  color: white;
-  padding: 2px 8px;
-  bottom: 5px;
-  left: 5px;
+    background-color: red;
+    position: absolute;
+    color: white;
+    padding: 2px 8px;
+    bottom: 5px;
+    left: 5px;
+}
+.last-seen{
+    font-size: 0.8em;
+    display: flex;
+    justify-content: flex-end;
 }
 </style>

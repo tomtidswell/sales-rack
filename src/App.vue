@@ -23,15 +23,19 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  background-color: #f7e8ea;
-  color: #2c3e50;
-  display: flex;
-  flex-direction: column;
-  min-height: 80vh;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    background-image: url('./assets/shopping-centre.jpg');
+    background-color: #f7e8ea;
+    background-attachment: fixed;
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
 }
 header{
   font-size: 2em;
