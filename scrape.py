@@ -121,11 +121,13 @@ class MarksAndSpencerMapper:
         p_data = {}
         p_data['name'] = p.find(class_='product__title').text
         p_data['prices'] = []
-        for child in p.find(class_='sale-price').descendants:
-            if isinstance(child, type('bs4.element.NavigableString')):
-                p_data['prices'].append(child.string)
+        print('Sale prices:', p.find(class_='price'))
+        if p.find(class_='price'):
+            for child in p.find(class_='price').descendants:
+                if isinstance(child, type('bs4.element.NavigableString')):
+                    p_data['prices'].append(child.string)
         p_data['url'] = f"{site}{p.a['href']}"
-        p_data['badge'] = p.find(class_='product__badge').text
+        p_data['badge'] = p.find(class_='product__badge').text if p.find(class_='product__badge') else None
         p_data['images'] = [{'source': img['src'], 'class': img['class']}
                             for img in p.find_all('img')]
         p_data['source'] = self.feedname
@@ -137,13 +139,19 @@ class MarksAndSpencerMapper:
         """Extracts and prints out product information."""
         p_data = {}
         p_data['name'] = product_data['name']
-        if len(product_data['prices']) == 3:
-            p_data['sale_price'] = product_data['prices'][1]
-        elif len(product_data['prices']) == 4:
-            p_data['sale_price'] = product_data['prices'][1]
-            p_data['prev_price'] = product_data['prices'][3]
+        price_data = {}
+        # if len(product_data['prices']) == 3:
+        price_data['priceDescription'] = product_data['prices'][0]
+        price_data['price'] = product_data['prices'][1]
+        if len(product_data['prices']) > 2:
+            p_data['prevPriceDescription'] = product_data['prices'][2]
+            p_data['prevPrice'] = product_data['prices'][3]
+        
+        if product_data['badge']:
+            price_data['badge'] = product_data['badge']
+
+        p_data['priceData'] = price_data
         p_data['url'] = product_data['url']
-        p_data['badge'] = product_data['badge']
         for img in product_data['images']:
             if 'product__image--view' in img['class']:
                 p_data['main_image'] = img['source']
