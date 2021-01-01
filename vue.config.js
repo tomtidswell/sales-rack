@@ -32,5 +32,16 @@ module.exports = {
     // and falls back to `public/index.html` if not found.
     // Output filename is inferred to be `subpage.html`.
     // subpage: 'src/subpage/main.js'
+  },
+  css: {
+    loaderOptions: {
+      // pass options to sass-loader
+      // @/ is an alias to src/
+      // so this assumes you have a file named `src/variables.sass`
+      // Note: this option is named as "prependData" in sass-loader v8
+      scss: {
+        additionalData: `@import "~@/styles/variables.scss";`
+      }
+    }
   }
 }
