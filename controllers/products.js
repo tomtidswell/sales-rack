@@ -23,26 +23,26 @@ function showRoute(req, res, next) {
 }
 
 // CREATE handler
-function createRoute(req, res, next) {
-    Product
-        .create(req.body)
-        .then(product => res.status(201).json(product))
-        .catch(next)
-}
+// function createRoute(req, res, next) {
+//     Product
+//         .create(req.body)
+//         .then(product => res.status(201).json(product))
+//         .catch(next)
+// }
 
 // EDIT handler
 function editHandler(req, res, next) {
-    const { url } = req.body
+    const { url, priceData } = req.body
     if (!url) throw new Error('Bad request')
-    console.log(req.body)
+
     Product
         //access the query parameters in the url using req.query
         .findOneAndUpdate({ url }, req.body, { new: true, upsert: true })
         .then(product => {
             if (!product) throw new Error('Not Found')
+            product.addPrice(priceData)
             return product.save()
         })
-        // .then(()=> Product.findOne({ url }))
         .then(product => res.status(202).json(product))
         .catch(next)
 }
@@ -60,7 +60,7 @@ function deleteHandler(req, res, next) {
 module.exports = {
     index: indexRoute,
     show: showRoute,
-    create: createRoute,
+    // create: createRoute,
     edit: editHandler,
     delete: deleteHandler,
 }

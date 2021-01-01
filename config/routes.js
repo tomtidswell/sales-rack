@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const productController = require('../controllers/products')
+// const pricesController = require('../controllers/prices')
 
 // a shorthand can be used, which is enabled through the express package
 router.route('/products')
@@ -10,6 +11,14 @@ router.route('/products')
 router.route('/products/:id')
   .get(productController.show)
   .delete(productController.delete)
+
+// router.route('/products/:id/prices')
+//     .get(pricesController.index)
+//     .post(pricesController.create)
+
+// router.route('/price/:id')
+//     .put(pricesController.edit)
+//     .delete(pricesController.delete)
 
 // catch all of the remaining routes and verbs (.all is a shortcut for all get/post/put etc...)
 router.route('/*')
