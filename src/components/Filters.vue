@@ -1,16 +1,13 @@
 <template>
-  <div class="hello">
-    <h2>Products</h2>
-    <select v-model="sorting" @change="$emit('sort', sorting)">
+  <div class="filters">
+    <select v-model="sorting" @change="$emit('sort', sorting)" >
       <option value="relevant">Relevant</option>
       <option value="price">Price ascending</option>
     </select>
-    <label>
+    <label class="check-option" >
         <input type="checkbox" id="checkbox" value="recent" v-model="filterOptions" />
         Recently seen
     </label>
-    {{sorting}}
-    {{filterOptions}}
   </div>
 </template>
 
@@ -24,7 +21,7 @@ export default {
   data() {
     return {
       message: "Hello",
-      sorting: "",
+      sorting: "relevant",
       filterOptions: [],
     };
   },
@@ -59,10 +56,13 @@ export default {
 a {
   color: #42b983;
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 20px;
-  padding: 0 20px;
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.check-option{
+    display: block;
 }
 </style>

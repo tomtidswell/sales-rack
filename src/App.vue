@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <header>SaleRack</header>
+    <nav>
+        <div>M&S</div>
+        <div>John Lewis</div>
+        <div>Matalan</div>
+    </nav>
     <main>
         <Filters />
         <Products msg="Welcome to Your Vue.js App"/>
@@ -28,7 +33,7 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     background-image: url('./assets/shopping-centre.jpg');
-    background-color: #f7e8ea;
+    background-color: #fbf4f5;
     background-attachment: fixed;
     background-size: cover;
     background-blend-mode: overlay;

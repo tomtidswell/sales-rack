@@ -4,10 +4,11 @@
     <div class="line"></div>
     <img class="main" :src="image" >
     <div class="prices">
-        {{salePrice}}
+        <div class="badge" v-if="badge">{{badge}}</div>
+        <div class="no-badge" v-else></div>
+        {{ price }}
         <span class="prices previous-price" v-if="prevPrice">{{prevPrice}}</span>
     </div>
-    <div class="badge">{{badge}}</div>
     <div class="last-seen">⏱{{lastSeen}}</div>
   </div>
 </template>
@@ -27,10 +28,13 @@ export default {
   computed: {
     // a computed getter
     name: function () { return this.data.name },
-    salePrice: function () { return this.data.sale_price },
+    price: function () { return this.data.latestPrice.price },
+    priceDescription: function () { 
+        return this.data.latestPrice.priceDescription.replace('Price','').replace('price','').replace('Current','').trim()
+    },
     prevPrice: function () { return this.data.prev_price },
     url: function () { return this.data.url },
-    badge: function () { return this.data.badge },
+    badge: function () { return this.data.latestPrice.badge || this.priceDescription },
     image: function () { return this.data.main_image },
     lastSeen: function () { 
         return timeDiffToNow(this.data.updatedAt)
@@ -81,18 +85,18 @@ img.main{
 .prices{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+    padding-top: 6px;
 }
 .previous-price{
     text-decoration: line-through;
 }
 .badge{
     background-color: red;
-    position: absolute;
+    position: relative;
     color: white;
     padding: 2px 8px;
-    bottom: 5px;
-    left: 5px;
+    width: fit-content;
 }
 .last-seen{
     font-size: 0.8em;
