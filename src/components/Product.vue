@@ -49,7 +49,7 @@ export default {
     position:relative;
     display: flex;
     flex-direction: column;
-    box-shadow: 10px 10px 14px 0px #9a9a9a40, -10px -10px 14px 0px #fff8f836;
+    box-shadow: 10px 10px 14px 0px #9a9a9a2b, -10px -10px 14px 0px #e2e2e221;
     border-radius: 5px;
     padding: 10px;
     backdrop-filter: blur(7px);

@@ -4,7 +4,7 @@
         <div class="columns">
         <div class="column">
             <div class="subtitle">
-                {{ retailer }}
+                {{ retailerData.displayName }}
             </div>
         </div>
         <Filters class="column" />
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import {retailer_config} from '../../lib/retailers'
 import Product from "./Product.vue";
 import Filters from "./Filters.vue";
 
@@ -40,16 +41,24 @@ export default {
     };
   },
   created() {
-    this.getData();
+    this.getData()
   },
   computed: {
-    csvData: function () {
-      return ""; //this.$papa.parse('../../data/marksandspencer-home.csv', {delimiter: ",", newline: ""})
+    retailers: function () {
+      return retailer_config
     },
+    retailerData: function () {
+      return this.retailers[this.retailer] || {}
+    },
+  },
+  watch: {
+    retailer: function () {
+      this.getData()
+    }
   },
   methods: {
     async getData() {
-      const res = await fetch("./products/")
+      const res = await fetch(`./retailer/${this.retailer.toLowerCase()}`)
       console.log("Endpoint response:", res)
       this.productData = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)

@@ -47,9 +47,14 @@ export default {
       return ""; //this.$papa.parse('../../data/marksandspencer-home.csv', {delimiter: ",", newline: ""})
     },
   },
+  watch: {
+    category: function () {
+      this.getData()
+    }
+  },
   methods: {
     async getData() {
-      const res = await fetch("./category/")
+      const res = await fetch(`./category/${this.category.toLowerCase()}`)
       console.log("Endpoint response:", res)
       this.productData = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
