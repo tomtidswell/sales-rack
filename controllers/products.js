@@ -9,6 +9,28 @@ function indexRoute(req, res, next) {
         .catch(next)
 }
 
+// INDEX RETAILER handler
+function retailerIndexRoute(req, res, next) {
+    const { retailer } = req.params
+    console.log('retailer:', retailer)
+    Product
+        //access the query parameters in the url using req.query
+        .find({ retailer })
+        .then(products => res.status(200).json(products))
+        .catch(next)
+}
+
+// INDEX RETAILER handler
+function categoryIndexRoute(req, res, next) {
+    const { category } = req.params
+    console.log('category:', category)
+    Product
+        //access the query parameters in the url using req.query
+        .find({ category })
+        .then(products => res.status(200).json(products))
+        .catch(next)
+}
+
 // SHOW handler
 function showRoute(req, res, next) {
     Product
@@ -22,15 +44,7 @@ function showRoute(req, res, next) {
         .catch(next)
 }
 
-// CREATE handler
-// function createRoute(req, res, next) {
-//     Product
-//         .create(req.body)
-//         .then(product => res.status(201).json(product))
-//         .catch(next)
-// }
-
-// EDIT handler
+// EDIT / CREATE handler
 function editHandler(req, res, next) {
     const { url, priceData } = req.body
     if (!url) throw new Error('Bad request')
@@ -59,6 +73,8 @@ function deleteHandler(req, res, next) {
 //build up the export object so it can simply be imported in the router file
 module.exports = {
     index: indexRoute,
+    categoryIndex: categoryIndexRoute,
+    retailerIndex: retailerIndexRoute,
     show: showRoute,
     // create: createRoute,
     edit: editHandler,

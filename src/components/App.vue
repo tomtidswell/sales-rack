@@ -5,7 +5,7 @@
     </nav>
     <main>
       <ProductsByRetailer v-if="shop && !category" :retailer="shop" />
-      <ProductsByCategory v-if="!shop && category" :category="category" />
+      <ProductsByCategory v-else-if="!shop && category" :category="category" />
       <ProductsBest v-else :retailer="shop" />
     </main>
     <footer>Shop footer</footer>

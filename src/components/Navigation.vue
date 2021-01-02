@@ -16,10 +16,10 @@
         </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Shops" collapsible>
-        <b-navbar-item @click="shopClick('M&S')"> M&S </b-navbar-item>
-        <b-navbar-item @click="shopClick('John Lewis')"> John Lewis </b-navbar-item>
-        <b-navbar-item @click="shopClick('Next')"> Next </b-navbar-item>
-        <b-navbar-item @click="shopClick('Matalan')"> Matalan </b-navbar-item>
+        <b-navbar-item 
+          v-for="(data, name) in retailers"
+          :key="name"
+          @click="shopClick(data.websafeName)"> {{data.displayName}} </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Questions?" collapsible>
         <b-navbar-item href="#"> About </b-navbar-item>
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import {retailer_config} from '../../lib/retailers'
+
 export default {
   name: "Navigation",
   components: {},
@@ -53,11 +55,12 @@ export default {
     }
   },
   created() {
-
+    
   },
   computed: {
-    csvData: function () {
-      return ""; //this.$papa.parse('../../data/marksandspencer-home.csv', {delimiter: ",", newline: ""})
+    retailers: function () {
+      console.log(retailer_config)
+      return retailer_config
     },
   },
   methods: {

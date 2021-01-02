@@ -6,13 +6,19 @@ const productController = require('../controllers/products')
 router.route('/products')
   .get(productController.index)
   .put(productController.edit)
-//   .post(productController.create)
-
+  //   .post(productController.create)
+  
 router.route('/products/:id')
   .get(productController.show)
   .delete(productController.delete)
+  
+router.route('/category/:category')
+  .get(productController.categoryIndex)
 
-// router.route('/products/:id/prices')
+router.route('/retailer/:retailer')
+  .get(productController.retailerIndex)
+
+    // router.route('/products/:id/prices')
 //     .get(pricesController.index)
 //     .post(pricesController.create)
 

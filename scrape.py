@@ -7,7 +7,7 @@ from selenium import webdriver
 import requests
 # from requests_html import HTMLSession
 from bs4 import BeautifulSoup
-from pymongo import MongoClient
+# from pymongo import MongoClient
 
 # mydict = {
 #     "name": "Pure Cotton Luxury Spa Towel",
@@ -86,10 +86,12 @@ class MarksAndSpencerScraper:
 
 class MarksAndSpencerMapper:
     def __init__(self, scraped_data=[]):
-        dbclient = MongoClient('mongodb://localhost/')
-        sales_data = dbclient["sales"]
-        self.collection = sales_data["products"]
+        # dbclient = MongoClient('mongodb://localhost/')
+        # sales_data = dbclient["sales"]
+        # self.collection = sales_data["products"]
         self.feedname = "marksandspencer-home"
+        self.category = "homeware"
+        self.retailer = "marksandspencer"
         self.scraped_data = scraped_data
         self.parsed_products = []
         self.mapped_products = []
@@ -130,7 +132,6 @@ class MarksAndSpencerMapper:
         p_data['badge'] = p.find(class_='product__badge').text if p.find(class_='product__badge') else None
         p_data['images'] = [{'source': img['src'], 'class': img['class']}
                             for img in p.find_all('img')]
-        p_data['source'] = self.feedname
         print('Parsed data', p_data)
         print("------")
         self.parsed_products.append(p_data)
@@ -157,7 +158,9 @@ class MarksAndSpencerMapper:
                 p_data['main_image'] = img['source']
             elif 'product__image--hover' in img['class']:
                 p_data['hover_image'] = img['source']
-        p_data['source'] = product_data['source']
+        p_data['source'] = self.feedname
+        p_data['category'] = self.category
+        p_data['retailer'] = self.retailer
         print('Mapped data', p_data)
         print("------")
         self.mapped_products.append(p_data)

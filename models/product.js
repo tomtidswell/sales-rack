@@ -26,6 +26,8 @@ const productSchema = new mongoose.Schema({
     hover_image: { type: String },
     images: { type: Array },
     source: { type: String },
+    retailer: { type: String },
+    category: { type: String },
     // secret: { type: String, get: obfuscate },
 }, {
     timestamps: true, 
