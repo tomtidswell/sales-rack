@@ -48,13 +48,13 @@ function showRoute(req, res, next) {
 function editHandler(req, res, next) {
     const { url, priceData } = req.body
     if (!url) throw new Error('Bad request')
-
     Product
         //access the query parameters in the url using req.query
         .findOneAndUpdate({ url }, req.body, { new: true, upsert: true })
         .then(product => {
             if (!product) throw new Error('Not Found')
-            product.addPrice(priceData)
+            // the force parameter will force a price update
+            product.addPrice(priceData, req.query.force === 'true')
             return product.save()
         })
         .then(product => res.status(202).json(product))

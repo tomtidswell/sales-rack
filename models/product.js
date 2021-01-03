@@ -1,6 +1,8 @@
 //use this file to define the schema and model of the objects required for the api
 //mongoose is an ODM (object data modeller)- an interface between the database and the programming language
 const mongoose = require('mongoose')
+const { parsePrice } = require('../lib/utils')
+
 
 const priceSchema = new mongoose.Schema({
     price: { type: String, required: true },
@@ -41,10 +43,38 @@ productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
 })
 
 // small helper function to handle adding a new price
-productSchema.methods.addPrice = function (priceData) {
+productSchema.methods.addPrice = function (priceData, forceUpdate) {
     const prevPriceData = this.priceHistory.length ? this.priceHistory[this.priceHistory.length - 1] : {}
-    // console.log('Prev price to string:', JSON.stringify(prevPriceData))
-    if (prevPriceData.price !== priceData.price) this.priceHistory.push(priceData)
+
+    const prevPrice = parsePrice(priceData.prevPrice)
+    if (prevPrice){
+        const calcDiscount = parsePrice(priceData.price) / prevPrice
+        priceData.discount = 100 - calcDiscount.toFixed(2) * 100
+        console.log('Calculated discount:', priceData.discount)
+    }
+    
+    // extract a discount from the savings message
+    if(priceData.badge){
+        let result = /(?<discount>\d{1,2})(?=%)/.exec(priceData.badge)
+        if (result && result.groups) {
+            // set this extracted result as the discount and remove the badge
+            priceData.discount = result.groups.discount
+            delete priceData.badge
+            console.log('Extracted discount:', priceData.discount)
+        }
+    }
+    
+    if (forceUpdate ||
+        prevPriceData.price !== priceData.price ||
+        prevPriceData.priceDescription !== priceData.priceDescription ||
+        prevPriceData.prevPrice !== priceData.prevPrice ||
+        prevPriceData.prevPriceDescription !== priceData.prevPriceDescription ||
+        prevPriceData.badge !== priceData.badge ||
+        prevPriceData.discount !== priceData.discount
+    ) {
+        console.log('Updating')
+        this.priceHistory.push(priceData)
+    }
 }
 
 
