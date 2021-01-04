@@ -1,11 +1,13 @@
 <template>
   <div class="product" v-show="lastSeen !== 'Not recently'">
-    <a :href="url" class="name">{{ name }}</a>
+    <a :href="url" class="name" target="_blank">{{ name }}</a>
     <div class="line"></div>
     <div class="discount-container">
       <div class="discount" v-if="discount">{{ discount }}</div>
     </div>
-    <img class="main" :src="image" />
+    <a :href="url" class="img-link image is-square" target="_blank">
+      <img class="main" :src="image" />
+    </a>
     <div class="badge-container" v-if="badge">
       <div class="badge">{{ badge }}</div>
     </div>
@@ -20,7 +22,8 @@
 </template>
 
 <script>
-import { timeDiffToNow } from "../../lib/time";
+import { timeDiffToNow } from "../../lib/time"
+
 export default {
   name: "Products",
   props: {
@@ -29,7 +32,7 @@ export default {
   data() {
     return {
       message: "Hello",
-    };
+    }
   },
   computed: {
     // a computed getter
@@ -108,6 +111,7 @@ img.main {
 }
 .discount{
   position: absolute;
+  z-index: 10;
   top: 5px;
   right: 5px;
   display: flex;

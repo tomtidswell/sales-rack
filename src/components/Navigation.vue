@@ -10,6 +10,7 @@
       <b-navbar-item @click="homeClick()"> Best deals </b-navbar-item>
       <b-navbar-dropdown label="Categories" collapsible>
         <b-navbar-item @click="categoryClick('Homeware')"> Homeware </b-navbar-item>
+        <b-navbar-item @click="categoryClick('Tableware')"> Tableware </b-navbar-item>
         <b-navbar-item @click="categoryClick('Lighting')"> Lighting </b-navbar-item>
         <b-navbar-item @click="categoryClick('Furniture')">
           Furniture

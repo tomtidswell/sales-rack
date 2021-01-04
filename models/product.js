@@ -1,7 +1,7 @@
 //use this file to define the schema and model of the objects required for the api
 //mongoose is an ODM (object data modeller)- an interface between the database and the programming language
 const mongoose = require('mongoose')
-const { parsePrice } = require('../lib/utils')
+const { parsePrice, parseDiscount } = require('../lib/utils')
 
 
 const priceSchema = new mongoose.Schema({
@@ -9,7 +9,7 @@ const priceSchema = new mongoose.Schema({
     priceDescription: { type: String, required: false },
     prevPrice: { type: String, required: false },
     prevPriceDescription: { type: String, required: false },
-    discount: { type: String, required: false },
+    discount: { type: Number, required: false },
     badge: { type: String, required: false },
 }, { timestamps: true })
 
@@ -33,8 +33,9 @@ const productSchema = new mongoose.Schema({
     // secret: { type: String, get: obfuscate },
 }, {
     timestamps: true, 
-    // toObject: { getters: true, setters: true },
-    toJSON: { getters: true, setters: true }
+    toObject: { virtuals: true },
+    toJSON: { getters: true, setters: true },
+    
 })
 
 // add a virtual field of latest price, which is just the most recent item from the price history
@@ -42,25 +43,37 @@ productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
     return doc.priceHistory[doc.priceHistory.length - 1]
 })
 
-// small helper function to handle adding a new price
+// add a virtual field of active discount, which is just the most recent item from the price history
+productSchema.virtual('activeDiscount').get((value, virtual, doc)=>{
+    return doc.priceHistory[doc.priceHistory.length - 1].discount || 0
+})
+
+// helper function to handle adding a new price
 productSchema.methods.addPrice = function (priceData, forceUpdate) {
     const prevPriceData = this.priceHistory.length ? this.priceHistory[this.priceHistory.length - 1] : {}
 
-    const prevPrice = parsePrice(priceData.prevPrice)
-    if (prevPrice){
-        const calcDiscount = parsePrice(priceData.price) / prevPrice
-        priceData.discount = 100 - calcDiscount.toFixed(2) * 100
+    const {price, isRange} = parsePrice(priceData.price)
+    console.log('Parsed price:', price, isRange)
+
+
+    const { price: prevPrice } = parsePrice(priceData.prevPrice)
+    if (prevPrice && !isRange){
+        console.log('Calculated discount:', price , prevPrice)
+        const calcDiscount = Math.floor(price / prevPrice * 100) 
+        console.log('Calculated discount:', calcDiscount)
+
+        priceData.discount = 100 - calcDiscount
         console.log('Calculated discount:', priceData.discount)
     }
     
     // extract a discount from the savings message
     if(priceData.badge){
-        let result = /(?<discount>\d{1,2})(?=%)/.exec(priceData.badge)
-        if (result && result.groups) {
+        const discount = parseDiscount(priceData.badge)
+        console.log('Extracted discount:', discount)
+        if (discount) {
             // set this extracted result as the discount and remove the badge
-            priceData.discount = result.groups.discount
+            priceData.discount = discount
             delete priceData.badge
-            console.log('Extracted discount:', priceData.discount)
         }
     }
     

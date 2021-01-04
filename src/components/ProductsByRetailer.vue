@@ -7,7 +7,7 @@
                 {{ retailerData.displayName }}
             </div>
         </div>
-        <Filters class="column" />
+        <Filters class="column" @sort="handleSort" />
         </div>
       </div>
     <div class="grid">
@@ -21,9 +21,11 @@
 </template>
 
 <script>
+// const _ = require('lodash/core')
+import _ from 'lodash'
 import {retailer_config} from '../../lib/retailers'
-import Product from "./Product.vue";
-import Filters from "./Filters.vue";
+import Product from "./Product.vue"
+import Filters from "./Filters.vue"
 
 export default {
   name: "ProductsByRetailer",
@@ -60,8 +62,11 @@ export default {
     async getData() {
       const res = await fetch(`./retailer/${this.retailer.toLowerCase()}`)
       console.log("Endpoint response:", res)
-      this.productData = res.status === 200 ? await res.json() : []
+      const prods = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
+      console.log("Sorted data:", )
+      this.productData = _.orderBy(prods, 'activeDiscount','desc')
+
       // const data = this.$papa.parse(csv, {download: true, delimiter: ",", newline: "", complete: function(results, file) {
       //   console.log("Parsing complete:", results, file)
       // }})
@@ -70,6 +75,12 @@ export default {
       //   delimiter: ","
       // })
     },
+    handleSort: function (e) {
+      const [field, direction] = e
+      console.log(field, direction)
+      this.productData = _.orderBy(this.productData, field, direction)
+      console.log(this.productData)
+    }
   },
 };
 </script>

@@ -1,8 +1,10 @@
 <template>
   <div class="filters">
-    <select v-model="sorting" @change="$emit('sort', sorting)" >
-      <option value="relevant">Relevant</option>
-      <option value="price">Price ascending</option>
+    <select v-model="sorting" @change="handleSort" >
+      <option value="percent-discount">Best discount</option>
+      <option value="price-discount">Most money off</option>
+      <option value="price-asc">Price ascending</option>
+      <option value="price-desc">Price descending</option>
     </select>
     <label class="check-option" >
         <input type="checkbox" id="checkbox" value="recent" v-model="filterOptions" />
@@ -21,12 +23,11 @@ export default {
   data() {
     return {
       message: "Hello",
-      sorting: "relevant",
+      sorting: "percent-discount",
       filterOptions: [],
     };
   },
   created() {
-    this.getData();
   },
   computed: {
     csvData: function () {
@@ -34,7 +35,21 @@ export default {
     },
   },
   methods: {
-    async getData() {
+    handleSort() {
+      switch (this.sorting) {
+        case "price-discount":
+          this.$emit('sort', ['activeMoneyOff', 'desc'])
+          break;
+        case "price-asc":
+          this.$emit('sort', ['latestPrice.price', 'asc'])
+          break;
+        case "price-desc":
+          this.$emit('sort', ['latestPrice.price', 'desc'])
+          break;
+        default:
+          this.$emit('sort', ['activeDiscount', 'desc'])
+          break;
+      }
     },
   },
 };
