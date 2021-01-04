@@ -5,13 +5,20 @@ const { parsePrice, parseDiscount } = require('../lib/utils')
 
 
 const priceSchema = new mongoose.Schema({
-    price: { type: String, required: true },
+    price: { type: String, required: false },
+    priceRange: { type: String, required: false },
     priceDescription: { type: String, required: false },
     prevPrice: { type: String, required: false },
     prevPriceDescription: { type: String, required: false },
-    discount: { type: Number, required: false },
+    discount: { 
+        "%": { type: Number, required: false },
+        "£": { type: Number, required: false },
+    },
     badge: { type: String, required: false },
-}, { timestamps: true })
+}, { 
+    timestamps: true,
+})
+
 
 // example setter
 // function obfuscate (dBText) {
@@ -44,46 +51,55 @@ productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
 })
 
 // add a virtual field of active discount, which is just the most recent item from the price history
-productSchema.virtual('activeDiscount').get((value, virtual, doc)=>{
-    return doc.priceHistory[doc.priceHistory.length - 1].discount || 0
-})
+// productSchema.virtual('discount').get((value, virtual, doc)=>{
+//     const priceData = doc.priceHistory[doc.priceHistory.length - 1]
+//     const discount = priceData.discount || undefined
+//     const { price, priceRange } = parsePrice(priceData.price)
+//     const { price: prevPrice } = parsePrice(priceData.prevPrice)
+//     if (!discount || priceRange || !prevPrice) return { "%": 0, "£": 0 }
+//     return { "%": discount, "£": prevPrice - price}
+// })
+
+// add a virtual field of active discount amount, which is just the most recent item from the price history
+// productSchema.virtual('activeMoneyOff').get((value, virtual, doc) => {
+// })
 
 // helper function to handle adding a new price
 productSchema.methods.addPrice = function (priceData, forceUpdate) {
-    const prevPriceData = this.priceHistory.length ? this.priceHistory[this.priceHistory.length - 1] : {}
-
-    const {price, isRange} = parsePrice(priceData.price)
-    console.log('Parsed price:', price, isRange)
-
-
+    const { price, priceRange } = parsePrice(priceData.price)
     const { price: prevPrice } = parsePrice(priceData.prevPrice)
-    if (prevPrice && !isRange){
-        console.log('Calculated discount:', price , prevPrice)
-        const calcDiscount = Math.floor(price / prevPrice * 100) 
-        console.log('Calculated discount:', calcDiscount)
-
-        priceData.discount = 100 - calcDiscount
+    console.log('Parsed prices:', price, priceRange)
+    
+    if (priceRange) {
+        priceData.price = price
+        priceData.priceRange = priceRange
+    }
+    
+    if (prevPrice && !priceRange){
+        const calcDiscount = 100 - Math.floor(price / prevPrice * 100) 
+        priceData.discount = { '%': calcDiscount, "£": prevPrice - price }
         console.log('Calculated discount:', priceData.discount)
     }
     
     // extract a discount from the savings message
-    if(priceData.badge){
+    if (priceData.badge && !priceData.discount){
         const discount = parseDiscount(priceData.badge)
         console.log('Extracted discount:', discount)
         if (discount) {
             // set this extracted result as the discount and remove the badge
-            priceData.discount = discount
+            priceData.discount = { '%': discount }
             delete priceData.badge
         }
     }
     
+    // compare the new values with the old ones
+    const prevPriceData = this.priceHistory.length ? this.priceHistory[this.priceHistory.length - 1] : {}
     if (forceUpdate ||
         prevPriceData.price !== priceData.price ||
         prevPriceData.priceDescription !== priceData.priceDescription ||
         prevPriceData.prevPrice !== priceData.prevPrice ||
         prevPriceData.prevPriceDescription !== priceData.prevPriceDescription ||
-        prevPriceData.badge !== priceData.badge ||
-        prevPriceData.discount !== priceData.discount
+        prevPriceData.badge !== priceData.badge
     ) {
         console.log('Updating')
         this.priceHistory.push(priceData)

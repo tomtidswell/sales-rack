@@ -23,6 +23,7 @@
 
 <script>
 import { timeDiffToNow } from "../../lib/time"
+import _ from 'lodash'
 
 export default {
   name: "Products",
@@ -43,7 +44,7 @@ export default {
       return this.data.latestPrice.price;
     },
     discount: function () {
-      return this.data.latestPrice.discount;
+      return _.get(this.data, 'latestPrice.discount["%"]')
     },
     priceDescription: function () {
       return (this.data.latestPrice.priceDescription || '')

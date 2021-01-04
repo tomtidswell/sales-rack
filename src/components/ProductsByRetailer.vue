@@ -65,7 +65,7 @@ export default {
       const prods = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
       console.log("Sorted data:", )
-      this.productData = _.orderBy(prods, 'activeDiscount','desc')
+      this.productData = _.orderBy(prods, 'discount.%','desc')
 
       // const data = this.$papa.parse(csv, {download: true, delimiter: ",", newline: "", complete: function(results, file) {
       //   console.log("Parsing complete:", results, file)

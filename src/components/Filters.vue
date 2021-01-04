@@ -1,11 +1,13 @@
 <template>
   <div class="filters">
-    <select v-model="sorting" @change="handleSort" >
-      <option value="percent-discount">Best discount</option>
-      <option value="price-discount">Most money off</option>
-      <option value="price-asc">Price ascending</option>
-      <option value="price-desc">Price descending</option>
-    </select>
+    <div class="select">
+      <select v-model="sorting" @change="handleSort" >
+        <option value="percent-discount">Best discount (%)</option>
+        <option value="price-discount">Most money off (£)</option>
+        <option value="price-asc">Price ascending</option>
+        <option value="price-desc">Price descending</option>
+      </select>
+    </div>
     <label class="check-option" >
         <input type="checkbox" id="checkbox" value="recent" v-model="filterOptions" />
         Recently seen
@@ -38,7 +40,7 @@ export default {
     handleSort() {
       switch (this.sorting) {
         case "price-discount":
-          this.$emit('sort', ['activeMoneyOff', 'desc'])
+          this.$emit('sort', ['discount.£', 'desc'])
           break;
         case "price-asc":
           this.$emit('sort', ['latestPrice.price', 'asc'])
@@ -47,7 +49,7 @@ export default {
           this.$emit('sort', ['latestPrice.price', 'desc'])
           break;
         default:
-          this.$emit('sort', ['activeDiscount', 'desc'])
+          this.$emit('sort', ['discount.%', 'desc'])
           break;
       }
     },
