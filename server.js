@@ -9,7 +9,7 @@ const { requestLogger } = require('./lib/logger')
 const errorHandler = require('./lib/errorHandler')
 
 //connect to the database
-mongoose.connect(dbURI, {useNewUrlParser: true }, ()=> console.log('Database connected'))
+mongoose.connect(dbURI, { useNewUrlParser: true, useFindAndModify: false }, ()=> console.log('Database connected'))
 
 // register bodyparser before the router so that it can make use of its functionality
 app.use(bodyParser.json())

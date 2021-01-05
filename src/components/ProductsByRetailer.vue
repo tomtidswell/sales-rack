@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       message: "Hello",
+      productDataResponse: [],
       productData: [],
     };
   },
@@ -62,10 +63,10 @@ export default {
     async getData() {
       const res = await fetch(`./retailer/${this.retailer.toLowerCase()}`)
       console.log("Endpoint response:", res)
-      const prods = res.status === 200 ? await res.json() : []
+      this.productDataResponse = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
       console.log("Sorted data:", )
-      this.productData = _.orderBy(prods, 'discount.%','desc')
+      this.productData = _.orderBy(this.productDataResponse, 'latestPrice.discount.%','desc')
 
       // const data = this.$papa.parse(csv, {download: true, delimiter: ",", newline: "", complete: function(results, file) {
       //   console.log("Parsing complete:", results, file)
@@ -78,7 +79,7 @@ export default {
     handleSort: function (e) {
       const [field, direction] = e
       console.log(field, direction)
-      this.productData = _.orderBy(this.productData, field, direction)
+      this.productData = _.orderBy(this.productDataResponse, field, direction)
       console.log(this.productData)
     }
   },

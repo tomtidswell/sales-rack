@@ -11,8 +11,8 @@ const priceSchema = new mongoose.Schema({
     prevPrice: { type: String, required: false },
     prevPriceDescription: { type: String, required: false },
     discount: { 
-        "%": { type: Number, required: false },
-        "£": { type: Number, required: false },
+        "%": { type: Number, required: false, default: 0 },
+        "£": { type: Number, required: false, default: 0 },
     },
     badge: { type: String, required: false },
 }, { 
