@@ -4,6 +4,7 @@
       <div class="columns">
         <div class="column">
           <div class="subtitle">Browse our best deals</div>
+          <Search />
         </div>
       </div>
     </div>
@@ -18,7 +19,9 @@
               :data="product"
               :key="product._id"
             />
-            <div class="more button is-primary is-rounded is-outlined">More</div>
+            <div class="more button is-primary is-rounded is-outlined">
+              More
+            </div>
             <div class="spacer"></div>
           </div>
         </div>
@@ -35,7 +38,9 @@
               :data="product"
               :key="product._id"
             />
-            <div class="more button is-primary is-rounded is-outlined">More</div>
+            <div class="more button is-primary is-rounded is-outlined">
+              More
+            </div>
             <div class="spacer"></div>
           </div>
         </div>
@@ -46,11 +51,12 @@
 
 <script>
 import Product from "./Product.vue";
+import Search from "./Search.vue";
 
 export default {
   name: "ProductsBest",
   components: {
-    Product,
+    Product, Search,
   },
   props: {},
   data() {
@@ -61,6 +67,8 @@ export default {
   },
   created() {
     this.getData();
+  },
+  mounted() {
   },
   computed: {
     csvData: function () {
@@ -95,7 +103,7 @@ section.products {
   padding: 10px 20px;
   background-color: white;
   border-radius: 10px;
-  .subtitle{
+  .subtitle {
     margin: 0;
     font-size: 1.5em;
   }
@@ -116,10 +124,10 @@ article {
       margin-right: 20px;
     }
   }
-  .more{
+  .more {
     align-self: center;
   }
-  .spacer{
+  .spacer {
     padding: 10px;
   }
 }
