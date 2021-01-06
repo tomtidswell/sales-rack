@@ -1,7 +1,8 @@
+const _ = require('lodash')
 const Product = require('../models/product')
 
 // INDEX handler
-function indexRoute(req, res, next) {
+function indexHandler(req, res, next) {
     Product
         //access the query parameters in the url using req.query
         .find(req.query)
@@ -11,7 +12,7 @@ function indexRoute(req, res, next) {
 }
 
 // INDEX RETAILER handler
-function retailerIndexRoute(req, res, next) {
+function retailerIndexHandler(req, res, next) {
     const { retailer } = req.params
     console.log('retailer:', retailer)
     Product
@@ -23,7 +24,7 @@ function retailerIndexRoute(req, res, next) {
 }
 
 // INDEX RETAILER handler
-function categoryIndexRoute(req, res, next) {
+function categoryIndexHandler(req, res, next) {
     const { category } = req.params
     console.log('category:', category)
     Product
@@ -35,7 +36,7 @@ function categoryIndexRoute(req, res, next) {
 }
 
 // SHOW handler
-function showRoute(req, res, next) {
+function showHandler(req, res, next) {
     Product
         .findById(req.params.id)
         .then(product => {
@@ -73,14 +74,44 @@ function deleteHandler(req, res, next) {
         .catch(next)
 }
 
+// KEYWORDS handler
+function keywordsHandler(req, res, next) {
+    Product
+        //access the query parameters in the url using req.query
+        .find({}, 'name')
+        // .sort({ 'updatedAt': -1 })
+        .then(products => {
+            const keywords = _.chain(products).map('name').map(_.words).flatten().uniq().filter(x=>!parseInt(x) && x.length > 2).sort().value()
+            return res.status(200).json(keywords)
+        })
+        .catch(next)
+}
 
-//build up the export object so it can simply be imported in the router file
+// SEARCH handler
+function searchHandler(req, res, next) {
+    if (!req.body || !req.body.length) {
+        return res.status(200).json([])
+    }
+    const query = req.body.join('|')
+    console.log(query)
+    Product
+        //access the query parameters in the url using req.query
+        .find({ name: new RegExp(`(${query})`, "i") }, [], { limit: 20 })
+        // .sort({ 'updatedAt': -1 })
+        .then(products => res.status(200).json(products))
+        .catch(next)
+}
+
+
+//build up the export object so it can simply be imported in the Handlerr file
 module.exports = {
-    index: indexRoute,
-    categoryIndex: categoryIndexRoute,
-    retailerIndex: retailerIndexRoute,
-    show: showRoute,
-    // create: createRoute,
+    index: indexHandler,
+    keywords: keywordsHandler,
+    categoryIndex: categoryIndexHandler,
+    retailerIndex: retailerIndexHandler,
+    show: showHandler,
+    // create: createHandler,
     edit: editHandler,
+    search: searchHandler,
     delete: deleteHandler,
 }

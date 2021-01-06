@@ -40,13 +40,13 @@ const productSchema = new mongoose.Schema({
     // secret: { type: String, get: obfuscate },
 }, {
     timestamps: true, 
-    toObject: { virtuals: true },
-    toJSON: { getters: true, setters: true },
-    
+    toObject: { getters: true },
+    toJSON: { getters: true },
 })
 
 // add a virtual field of latest price, which is just the most recent item from the price history
 productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
+    if (!doc.priceHistory) return undefined
     return doc.priceHistory[doc.priceHistory.length - 1]
 })
 

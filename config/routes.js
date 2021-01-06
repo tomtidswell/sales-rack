@@ -2,15 +2,21 @@ const router = require('express').Router()
 const productController = require('../controllers/products')
 // const pricesController = require('../controllers/prices')
 
-// a shorthand can be used, which is enabled through the express package
 router.route('/products')
   .get(productController.index)
   .put(productController.edit)
   //   .post(productController.create)
-  
-router.route('/products/:id')
+
+router.route('/products/search')
+  .put(productController.search)
+
+  router.route('/products/:id')
   .get(productController.show)
   .delete(productController.delete)
+
+router.route('/keywords')
+  .get(productController.keywords)
+  
   
 router.route('/category/:category')
   .get(productController.categoryIndex)
