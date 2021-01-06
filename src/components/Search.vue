@@ -1,22 +1,18 @@
 <template>
   <div class="filters">
-    <section class="section">
-      <div class="tags">
+    <section class="tags">
         <span class="tag is-primary is-dark is-medium" v-for="(tag, i) in searchArray" :key="i">
           {{tag}}
           <button class="delete is-small"></button>
         </span>
-      </div>
     </section>
 
     <div class="field">
-      <input class="input is-rounded is-medium" type="text" v-model="searchString" placeholder="Find some amazing deals..."/>
-      <div class="dropdown-content search-suggestions" v-if="currentWord && currentWord.length > 2">
-        <a href="#" class="dropdown-item">{{currentWord}}</a>
-        <a href="#" class="dropdown-item">Keyword matches</a>
+      <input class="input is-rounded is-medium" type="text" v-model="searchString" placeholder="Find some amazing deals..." @input="search"/>
+      <div class="dropdown-content search-suggestions" v-if="currentWord && currentWord.length > 1 && keyMatches.length">
+        <a href="#" class="dropdown-item" v-for="match in keyMatches" :key="match">{{match}}</a>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -32,11 +28,16 @@ export default {
   data() {
     return {
       searchString: "",
+      searchResponse: [],
       sorting: "percent-discount",
       filterOptions: [],
-    };
+      keys: [],
+    }
   },
-  created() {},
+  created() {
+    this.getData()
+    this.search()
+  },
   computed: {
     searchArray: function () {
       return _.chain(this.searchString).split(' ').filter(v=>v!=="").value()
@@ -44,9 +45,29 @@ export default {
     currentWord: function () {
       return _.chain(this.searchString).split(' ').nth(-1).value()
     },
+    // queryBody: function () {
+    //   return _.chain(this.searchString).split(' ').nth(-1).value()
+    // },
+    keyMatches: function () {
+      return _.filter(this.keys, k=>{
+        return _.includes(k.toLowerCase(), this.currentWord.toLowerCase())
+        })
+    },
   },
   methods: {
-    handleSort() {},
+    async getData() {
+      const res = await fetch("./keywords")
+      this.keys = res.status === 200 ? await res.json() : []
+    },
+    async search() {
+      const res = await fetch("./products/search", {
+        method: 'PUT', // or 'PUT'
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.searchArray),
+      })
+      this.searchResponse = res.status === 200 ? await res.json() : []
+      this.$emit('newResults', this.searchResponse)
+    },
   },
 };
 </script>
@@ -57,6 +78,7 @@ a {
   color: #42b983;
 }
 .filters {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -65,14 +87,22 @@ a {
   margin: 0 auto;
 }
 .tags {
+  position: absolute;
+  top: -40px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 0 5px;
+  margin: 0 10px;
+}
+.field{
+  position: relative;
 }
 .search-suggestions{
   margin: 0 25px;
+  position: absolute;
+  z-index: 10;
+  width: -webkit-fill-available;
 }
 .check-option {
   display: block;
