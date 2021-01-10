@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await fetch(`./scrapes`)
+      const res = await fetch(`../scrapes`)
       console.log("Endpoint response:", res)
       this.scrapeDataResponse = res.status === 200 ? await res.json() : []
       this.scrapeData = _.map(this.scrapeDataResponse, i=>{

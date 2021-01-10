@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import ProductsBest from '../components/ProductsBest.vue'
 import ProductsByCategory from '../components/ProductsByCategory.vue'
 import ProductsByRetailer from '../components/ProductsByRetailer.vue'
-import Scrapes from '../components/Scrapes.vue'
+import ScrapeHistory from '../components/ScrapeHistory.vue'
+import ScrapeSettings from '../components/ScrapeSettings.vue'
 
 Vue.use(VueRouter)
 
@@ -14,9 +15,14 @@ const routes = [
     component: ProductsBest
   },
   {
-    path: '/admin',
+    path: '/scraping/history',
     name: 'Scrapes',
-    component: Scrapes
+    component: ScrapeHistory
+  },
+  {
+    path: '/scraping/settings',
+    name: 'Scrapes',
+    component: ScrapeSettings
   },
   {
     path: '/category/:id',

@@ -21,7 +21,8 @@
           :to="{ path: `/retailer/${data.websafeName}` }"> {{data.displayName}} </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Admin" collapsible>
-        <b-navbar-item tag="router-link" :to="{ path: '/admin' }"> Scrapes </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/scraping/settings' }"> Scrape settings </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/scraping/history' }"> Scrape history </b-navbar-item>
       </b-navbar-dropdown>
     </template>
 
