@@ -13,12 +13,33 @@
         </div>
       </div>
     </section>
+
     <section class="section">
-      <h1 class="title">Need some inspiration?</h1>
+      <h1 class="title">Get some inspiration</h1>
+      <p class="heading">Following</p>
     </section>
-    <section class="columns section">
-      <div class="column is-9 product-bubble">
+
+
+    <section class="section">
+      <b-carousel-list v-model="test" :data="productData.slice(0, 8)" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+        <template slot="item" slot-scope="product">
+          <div class="card">
+            <Product
+              class="best-product"
+              :data="product"
+              :key="product._id"
+            />
+          </div>
+        </template>
+      </b-carousel-list>
+    </section>
+
+
+    <section class="section">
         <div class="subtitle">Kitchen deals</div>
+        <figure class="image is-128x128">
+          <img src="../assets/kitchen.jpeg">
+        </figure>
         <div class="scroller-wrap">
           <div class="scroller-content is-flex">
             <Product
@@ -33,10 +54,11 @@
             <div class="spacer"></div>
           </div>
         </div>
-      </div>
     </section>
-    <section class="columns section">
-      <div class="column is-9 is-offset-3 product-bubble">
+
+
+
+    <section class="section">
         <div class="subtitle">Homeware deals</div>
         <div class="scroller-wrap">
           <div class="scroller-content is-flex">
@@ -52,8 +74,66 @@
             <div class="spacer"></div>
           </div>
         </div>
-      </div>
     </section>
+
+
+
+
+
+    <section class="section">
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div class="card">
+          <div class="card-content">
+            <p class="title">LOGO</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-footer-item">
+              <p class="subtitle">M&S</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div class="card">
+          <div class="card-content">
+            <p class="title">LOGO</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-footer-item">
+              <p class="subtitle">John Lewis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div class="card">
+          <div class="card-content">
+            <p class="title">LOGO</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-footer-item">
+              <p class="subtitle">Next</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div class="card">
+          <div class="card-content">
+            <p class="title">LOGO</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-footer-item">
+              <p class="subtitle">Matalan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    </section>
+
+
   </div>
 </template>
 
@@ -73,6 +153,7 @@ export default {
   data() {
     return {
       message: "Hello",
+      test: 0,
       productData: [],
       searchResults: [],
     };
@@ -107,7 +188,7 @@ a {
   color: #42b983;
 }
 .subtitle {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 section.products {
   display: flex;
@@ -153,4 +234,5 @@ section.products {
 .spacer {
   padding: 10px;
 }
+
 </style>

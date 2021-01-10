@@ -8,7 +8,7 @@
     </section>
 
     <div class="field">
-      <input class="input is-rounded is-medium" type="text" v-model="searchString" placeholder="Find some amazing deals..." @input="search"/>
+      <input class="input is-medium search-box" type="text" v-model="searchString" placeholder="Find some amazing deals..." @input="search"/>
       <div class="dropdown-content search-suggestions" v-if="currentWord && currentWord.length > 1 && keyMatches.length">
         <a href="#" class="dropdown-item" v-for="match in keyMatches" :key="match">{{match}}</a>
       </div>
@@ -97,6 +97,14 @@ a {
 }
 .field{
   position: relative;
+}
+.search-box{
+    border-radius: 0;
+    border: 0;
+    border-bottom: 3px solid #d82e4c;
+    background: #ffffffa1;
+    outline: 0;
+    color: #ff6f88;
 }
 .search-suggestions{
   margin: 0 25px;

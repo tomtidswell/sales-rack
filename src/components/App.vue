@@ -8,7 +8,7 @@
       <ProductsByCategory v-else-if="!shop && category" :category="category" />
       <ProductsBest v-else :retailer="shop" />
     </main>
-    <footer>Shop footer</footer>
+    <Footer />
   </div>
 </template>
 
@@ -17,6 +17,7 @@ import ProductsByRetailer from "./ProductsByRetailer.vue"
 import ProductsByCategory from "./ProductsByCategory.vue"
 import ProductsBest from "./ProductsBest.vue"
 import Navigation from "./Navigation.vue"
+import Footer from "./Footer.vue"
 
 export default {
   name: "App",
@@ -25,6 +26,7 @@ export default {
     ProductsByCategory,
     ProductsBest,
     Navigation,
+    Footer,
   },
   data() {
     return {
