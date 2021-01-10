@@ -31,7 +31,6 @@ export default {
     Filters,
   },
   props: {
-    category: { type: String, default: 'Something'},
   },
   data() {
     return {
@@ -43,18 +42,18 @@ export default {
     this.getData();
   },
   computed: {
-    csvData: function () {
-      return ""; //this.$papa.parse('../../data/marksandspencer-home.csv', {delimiter: ",", newline: ""})
+    category: function () {
+      return this.$route.params.id.toLowerCase()
     },
   },
   watch: {
-    category: function () {
+    '$route.params': function () {
       this.getData()
     }
   },
   methods: {
     async getData() {
-      const res = await fetch(`./category/${this.category.toLowerCase()}`)
+      const res = await fetch(`../category/${this.category}`)
       console.log("Endpoint response:", res)
       this.productData = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)

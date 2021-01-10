@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const productController = require('../controllers/products')
-// const pricesController = require('../controllers/prices')
+const scrapeController = require('../controllers/scrapes')
 
 router.route('/products')
   .get(productController.index)
@@ -24,6 +24,11 @@ router.route('/category/:category')
 router.route('/retailer/:retailer')
   .get(productController.retailerIndex)
 
+
+router.route('/scrapes')
+  .get(scrapeController.index)
+  .post(scrapeController.create)
+  //   .post(productController.create)
     // router.route('/products/:id/prices')
 //     .get(pricesController.index)
 //     .post(pricesController.create)

@@ -1,30 +1,27 @@
 <template>
   <b-navbar :mobile-burger="true">
     <template slot="brand">
-      <!-- <b-navbar-item tag="router-link" :to="{ path: '/' }"> -->
-      <b-navbar-item @click="homeClick()">
+      <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <header>SaleRack</header>
       </b-navbar-item>
     </template>
     <template slot="start">
       <b-navbar-item @click="homeClick()"> Best deals </b-navbar-item>
       <b-navbar-dropdown label="Categories" collapsible>
-        <b-navbar-item @click="categoryClick('Homeware')"> Homeware </b-navbar-item>
-        <b-navbar-item @click="categoryClick('Tableware')"> Tableware </b-navbar-item>
-        <b-navbar-item @click="categoryClick('Lighting')"> Lighting </b-navbar-item>
-        <b-navbar-item @click="categoryClick('Furniture')">
-          Furniture
-        </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: `/category/Homeware`}"> Homeware </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: `/category/Tableware`}"> Tableware </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: `/category/Lighting`}"> Lighting </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: `/category/Furniture`}"> Furniture </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Shops" collapsible>
         <b-navbar-item 
           v-for="(data, name) in retailers"
           :key="name"
-          @click="shopClick(data.websafeName)"> {{data.displayName}} </b-navbar-item>
+          tag="router-link"
+          :to="{ path: `/retailer/${data.websafeName}` }"> {{data.displayName}} </b-navbar-item>
       </b-navbar-dropdown>
-      <b-navbar-dropdown label="Questions?" collapsible>
-        <b-navbar-item href="#"> About </b-navbar-item>
-        <b-navbar-item href="#"> Contact </b-navbar-item>
+      <b-navbar-dropdown label="Admin" collapsible>
+        <b-navbar-item tag="router-link" :to="{ path: '/admin' }"> Scrapes </b-navbar-item>
       </b-navbar-dropdown>
     </template>
 
@@ -68,14 +65,22 @@ export default {
     shopClick(e) {
         this.$emit('category', null)
         this.$emit('shop', e)
+        this.$emit('admin', null)
     },
     categoryClick(e) {
         this.$emit('category', e)
         this.$emit('shop', null)
+        this.$emit('admin', null)
     },
     homeClick() {
         this.$emit('category', null)
         this.$emit('shop', null)
+        this.$emit('admin', null)
+    },
+    adminClick(e) {
+        this.$emit('category', null)
+        this.$emit('shop', null)
+        this.$emit('admin', e)
     },
   },
 };

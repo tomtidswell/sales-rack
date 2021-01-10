@@ -1,38 +1,29 @@
 <template>
   <div id="app">
     <nav>
-      <Navigation @shop="shop=$event" @category="category=$event"/>
+      <Navigation  />
     </nav>
     <main>
-      <ProductsByRetailer v-if="shop && !category" :retailer="shop" />
-      <ProductsByCategory v-else-if="!shop && category" :category="category" />
-      <ProductsBest v-else :retailer="shop" />
+      <router-view/>
     </main>
     <Footer />
   </div>
 </template>
 
 <script>
-import ProductsByRetailer from "./ProductsByRetailer.vue"
-import ProductsByCategory from "./ProductsByCategory.vue"
-import ProductsBest from "./ProductsBest.vue"
+
 import Navigation from "./Navigation.vue"
 import Footer from "./Footer.vue"
 
 export default {
   name: "App",
   components: {
-    ProductsByRetailer,
-    ProductsByCategory,
-    ProductsBest,
     Navigation,
     Footer,
   },
   data() {
     return {
-      shop: null,
-      category: null,
-      filterOptions: [],
+      var1: [],
     }
   }
 }

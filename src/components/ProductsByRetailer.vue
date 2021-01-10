@@ -34,7 +34,7 @@ export default {
     Filters,
   },
   props: {
-    retailer: String,
+
   },
   data() {
     return {
@@ -47,6 +47,10 @@ export default {
     this.getData()
   },
   computed: {
+    retailer: function () {
+      console.log(this.$route)
+      return this.$route.params.id
+    },
     retailers: function () {
       return retailer_config
     },
@@ -55,13 +59,13 @@ export default {
     },
   },
   watch: {
-    retailer: function () {
+    '$route.params': function () {
       this.getData()
     }
   },
   methods: {
     async getData() {
-      const res = await fetch(`./retailer/${this.retailer.toLowerCase()}`)
+      const res = await fetch(`../retailer/${this.retailer}`)
       console.log("Endpoint response:", res)
       this.productDataResponse = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
