@@ -80,8 +80,17 @@ $section-padding: 1.5rem 1.5rem;
 
 $text: #333333;
 
-$carousel-arrow-color: green;
-$carousel-arrow-background: black;
+$carousel-arrow-color: black;
+$carousel-arrow-background: white;
+
+.mdi-chevron-right::before{
+    content: ">";
+    color: black;
+}
+.mdi-chevron-left::before{
+    content: "<";
+    color: black;
+}
 
 // Import Bulma and Buefy styles
 @import "~bulma";

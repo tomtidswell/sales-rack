@@ -20,18 +20,18 @@
               {{ props.row.page }}
           </b-table-column>
 
-          <b-table-column field="privacySelector" label="Privacy Selector" v-slot="props">
-              {{ props.row.privacySelector }}
-          </b-table-column>
-          
-          <b-table-column field="gridItemSelector" label="Grid Item Selector" v-slot="props">
-              {{ props.row.gridItemSelector }}
-          </b-table-column>
-
           <template #detail="props">
-            <div class="buttons">
-              <b-button size="is-small" type="is-warning" @click="handleEditClick(props)">Edit</b-button>
-              <b-button size="is-small" type="is-danger" @click="handleDeleteClick(props)">Delete</b-button>
+            <div class="content">
+              <div><strong>Privacy Selector</strong></div>
+              <div>{{ props.row.privacySelector }}</div>
+              <br/>
+              <div><strong>Grid Item Selector</strong></div>
+              <div>{{ props.row.gridItemSelector }}</div>
+              <br/>
+              <div class="buttons">
+                <b-button size="is-small" type="is-warning" @click="handleEditClick(props)">Edit</b-button>
+                <b-button size="is-small" type="is-danger" @click="handleDeleteClick(props)">Delete</b-button>
+              </div>
             </div>
           </template>
 
@@ -56,7 +56,10 @@
       <b-field label="Grid Item Selector">
         <b-input v-model="editingRowData.gridItemSelector"></b-input>
       </b-field>
-      <b-button type="is-success" @click="handleSaveClick" :loading="editWaiting">Save</b-button>
+      <div class="buttons">
+        <b-button type="is-success is-small" @click="handleSaveClick" :loading="editWaiting">Save</b-button>
+        <b-button type="is-success is-small is-light" @click="editingRowData = {}" :loading="editWaiting">Cancel</b-button>
+      </div>
     </section>
   </main>
 </template>
