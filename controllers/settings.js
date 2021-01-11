@@ -30,9 +30,10 @@ function createRoute(req, res, next) {
 
 // EDIT scrape setting
 function editRoute(req, res, next) {
+    const {_id} = req.body
     Setting
         //access the query parameters in the url using req.query
-        .findOneAndUpdate(req.query, req.body, { new: true, upsert: false })
+        .findOneAndUpdate({_id}, req.body, { new: true, upsert: false })
         // .then(setting => {
         //     if (!setting) throw new Error('Not Found')
         // })
