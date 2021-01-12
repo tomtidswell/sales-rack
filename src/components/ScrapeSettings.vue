@@ -37,10 +37,18 @@
 
         </b-table>
 
-    </div>
+      </div>
     </section>
 
-    <section class="section editing" v-if="editingRowData && editingRowData._id">
+    <section class="section">
+      <div class="buttons">
+        <b-button type="is-success is-small" @click="handleNewClick()">New setting</b-button>
+        <b-button type="is-success is-small is-light" @click="newSectionActive = false">Cancel</b-button>
+      </div>
+    </section>
+
+
+    <section class="section edit-setting" v-if="editingRowData && editingRowData._id">
       <b-field label="Retailer">
           <b-input v-model="editingRowData.retailer"></b-input>
       </b-field>
@@ -57,8 +65,30 @@
         <b-input v-model="editingRowData.gridItemSelector"></b-input>
       </b-field>
       <div class="buttons">
-        <b-button type="is-success is-small" @click="handleSaveClick" :loading="editWaiting">Save</b-button>
-        <b-button type="is-success is-small is-light" @click="editingRowData = {}" :loading="editWaiting">Cancel</b-button>
+        <b-button type="is-success is-small" @click="handleEditSaveClick" :loading="editSaveWaiting">Save</b-button>
+        <b-button type="is-success is-small is-light" @click="editingRowData = {}" :loading="editSaveWaiting">Cancel</b-button>
+      </div>
+    </section>
+
+    <section class="section new-setting" v-if="newSectionActive">
+      <b-field label="Retailer">
+          <b-input v-model="newRowData.retailer"></b-input>
+      </b-field>
+      <b-field label="Category">
+        <b-input v-model="newRowData.category"></b-input>
+      </b-field>
+      <b-field label="Page">
+        <b-input v-model="newRowData.page"></b-input>
+      </b-field>
+      <b-field label="Privacy Selector">
+        <b-input v-model="newRowData.privacySelector"></b-input>
+      </b-field>
+      <b-field label="Grid Item Selector">
+        <b-input v-model="newRowData.gridItemSelector"></b-input>
+      </b-field>
+      <div class="buttons">
+        <b-button type="is-success is-small" @click="handleNewSaveClick" :loading="newSaveWaiting">Save</b-button>
+        <b-button type="is-success is-small is-light" @click="editingRowData = {}" :loading="newSaveWaiting">Cancel</b-button>
       </div>
     </section>
   </main>
@@ -78,8 +108,11 @@ export default {
   data() {
     return {
       message: "Hello",
+      newSectionActive: false,
+      newRowData: {},
+      newSaveWaiting: false,
       editingRowData: {},
-      editWaiting: false,
+      editSaveWaiting: false,
       scrapeDataResponse: [],
       scrapeData: [],
     }
@@ -106,6 +139,11 @@ export default {
       })
       console.log("Data:", this.scrapeData)
     },
+    handleNewClick(){
+      console.log('New')
+      this.newRowData = {}
+      this.newSectionActive = true
+    },
     handleEditClick({ row }){
       console.log('Editing:', row)
       this.editingRowData = _.clone(row)
@@ -113,9 +151,27 @@ export default {
     handleDeleteClick({ row }){
       console.log('IMPLEMENT Delete:', row)
     },
-    async handleSaveClick(){
-      console.log('Saving:', this.editingRowData)
-      this.editWaiting = true
+    async handleNewSaveClick(){
+      console.log('Saving new:', this.newRowData)
+      this.newSaveWaiting = true
+      // send the new data to the endpoint
+      const res = await fetch(`../scrapesettings`, {
+        method: 'POST', // or 'PUT'
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.newRowData),
+      })
+      const body = await res.json()
+      console.log(res, body)
+      if(res.status === 201) {
+        this.newSaveWaiting = false
+        this.newSectionActive = false
+        this.newRowData = {}
+        this.getData()
+      }
+    },
+    async handleEditSaveClick(){
+      console.log('Saving edit:', this.editingRowData)
+      this.editSaveWaiting = true
       // send the new data to the endpoint
       const res = await fetch(`../scrapesettings/${this.editingRowData._id}`, {
         method: 'PUT', // or 'PUT'
@@ -125,7 +181,7 @@ export default {
       const body = await res.json()
       console.log(res, body)
       if(res.status === 202) {
-        this.editWaiting = false
+        this.editSaveWaiting = false
         this.editingRowData = {}
         this.getData()
       }
@@ -150,7 +206,8 @@ section.section .b-table .detail .detail-container{
     cursor: pointer;
   }
 }
-section.editing{
+section.new-setting,
+section.edit-setting{
   padding: 1.5rem 30vw;
 }
 .scrape-settings {
