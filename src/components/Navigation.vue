@@ -23,6 +23,7 @@
       <b-navbar-dropdown label="Admin" collapsible>
         <b-navbar-item tag="router-link" :to="{ path: '/scraping/settings' }"> Scrape settings </b-navbar-item>
         <b-navbar-item tag="router-link" :to="{ path: '/scraping/history' }"> Scrape history </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/admin/categorymap' }"> Category map config </b-navbar-item>
       </b-navbar-dropdown>
     </template>
 

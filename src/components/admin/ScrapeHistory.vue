@@ -19,7 +19,7 @@
 <script>
 // const _ = require('lodash/core')
 import _ from 'lodash'
-import {retailer_config} from '../../lib/retailers'
+// import {retailer_config} from '../../lib/retailers'
 // import { timeDiffToNow } from "../../lib/time"
 
 export default {
@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     retailers: function () {
-      return retailer_config
+      return null//retailer_config
     },
     retailerData: function () {
       return this.retailers[this.retailer] || {}

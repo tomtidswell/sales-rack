@@ -3,8 +3,9 @@ import VueRouter from 'vue-router'
 import ProductsBest from '../components/ProductsBest.vue'
 import ProductsByCategory from '../components/ProductsByCategory.vue'
 import ProductsByRetailer from '../components/ProductsByRetailer.vue'
-import ScrapeHistory from '../components/ScrapeHistory.vue'
-import ScrapeSettings from '../components/ScrapeSettings.vue'
+import ScrapeHistory from '../components/admin/ScrapeHistory.vue'
+import ScrapeSettings from '../components/admin/ScrapeSettings.vue'
+import CategoryMapping from '../components/admin/CategoryMapping.vue'
 
 Vue.use(VueRouter)
 
@@ -16,13 +17,18 @@ const routes = [
   },
   {
     path: '/scraping/history',
-    name: 'Scrapes',
+    name: 'ScrapeHistory',
     component: ScrapeHistory
   },
   {
     path: '/scraping/settings',
-    name: 'Scrapes',
+    name: 'ScrapeSettings',
     component: ScrapeSettings
+  },
+  {
+    path: '/admin/categorymap',
+    name: 'CategoryMapping',
+    component: CategoryMapping
   },
   {
     path: '/category/:id',
