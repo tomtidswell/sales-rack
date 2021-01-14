@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// const _ = require('lodash/core')
+
 import _ from 'lodash'
 import {retailer_config} from '../../lib/retailers'
 import Product from "./Product.vue"
@@ -34,11 +34,9 @@ export default {
     Filters,
   },
   props: {
-
   },
   data() {
     return {
-      message: "Hello",
       productDataResponse: [],
       productData: [],
     };
@@ -48,7 +46,6 @@ export default {
   },
   computed: {
     retailer: function () {
-      console.log(this.$route)
       return this.$route.params.id
     },
     retailers: function () {
@@ -66,25 +63,16 @@ export default {
   methods: {
     async getData() {
       const res = await fetch(`../retailer/${this.retailer}`)
-      console.log("Endpoint response:", res)
+      // console.log("Endpoint response:", res)
       this.productDataResponse = res.status === 200 ? await res.json() : []
-      console.log("Data:", this.productData)
-      console.log("Sorted data:", )
+      // console.log("Data:", this.productData)
       this.productData = _.orderBy(this.productDataResponse, 'latestPrice.discount.%','desc')
-
-      // const data = this.$papa.parse(csv, {download: true, delimiter: ",", newline: "", complete: function(results, file) {
-      //   console.log("Parsing complete:", results, file)
-      // }})
-      // console.log(data)
-      // this.unparsedResults = this.$papa.unparse(this.sampleData, {
-      //   delimiter: ","
-      // })
+      // console.log("Sorted data:", this.productData)
     },
     handleSort: function (e) {
       const [field, direction] = e
-      console.log(field, direction)
+      // console.log(field, direction)
       this.productData = _.orderBy(this.productDataResponse, field, direction)
-      console.log(this.productData)
     }
   },
 };

@@ -8,10 +8,11 @@
     <template slot="start">
       <b-navbar-item @click="homeClick()"> Best deals </b-navbar-item>
       <b-navbar-dropdown label="Categories" collapsible>
-        <b-navbar-item tag="router-link" :to="{ path: `/category/Homeware`}"> Homeware </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: `/category/Tableware`}"> Tableware </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: `/category/Lighting`}"> Lighting </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: `/category/Furniture`}"> Furniture </b-navbar-item>
+        <b-navbar-item 
+          v-for="(data, name) in categories"
+          :key="name"
+          tag="router-link"
+          :to="{ path: `/category/${data.websafeName}` }"> {{data.displayName}} </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Shops" collapsible>
         <b-navbar-item 
@@ -40,6 +41,7 @@
 
 <script>
 import {retailer_config} from '../../lib/retailers'
+import {category_config} from '../../lib/categories'
 
 export default {
   name: "Navigation",
@@ -59,8 +61,10 @@ export default {
   },
   computed: {
     retailers: function () {
-      console.log(retailer_config)
       return retailer_config
+    },
+    categories: function () {
+      return category_config
     },
   },
   methods: {

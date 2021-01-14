@@ -4,10 +4,10 @@
         <div class="columns">
         <div class="column">
             <div class="subtitle">
-                {{ category }}
+                {{ categoryData.displayName }}
             </div>
         </div>
-        <Filters class="column" />
+        <Filters class="column" @sort="handleSort" />
         </div>
       </div>
     <div class="grid">
@@ -21,8 +21,11 @@
 </template>
 
 <script>
-import Product from "./Product.vue";
-import Filters from "./Filters.vue";
+
+import _ from 'lodash'
+import {category_config} from '../../lib/categories'
+import Product from "./Product.vue"
+import Filters from "./Filters.vue"
 
 export default {
   name: "ProductsByCategory",
@@ -34,16 +37,22 @@ export default {
   },
   data() {
     return {
-      message: "Hello",
+      productDataResponse: [],
       productData: [],
     };
   },
   created() {
-    this.getData();
+    this.getData()
   },
   computed: {
     category: function () {
       return this.$route.params.id.toLowerCase()
+    },
+    categories: function () {
+      return category_config
+    },
+    categoryData: function () {
+      return this.categories[this.category] || {}
     },
   },
   watch: {
@@ -54,10 +63,17 @@ export default {
   methods: {
     async getData() {
       const res = await fetch(`../category/${this.category}`)
-      console.log("Endpoint response:", res)
-      this.productData = res.status === 200 ? await res.json() : []
-      console.log("Data:", this.productData)
+      // console.log("Endpoint response:", res)
+      this.productDataResponse = res.status === 200 ? await res.json() : []
+      // console.log("Data:", this.productDataResponse)
+      this.productData = _.orderBy(this.productDataResponse, 'latestPrice.discount.%','desc')
+      // console.log("Sorted data:", this.productData)
     },
+    handleSort: function (e) {
+      const [field, direction] = e
+      // console.log(field, direction)
+      this.productData = _.orderBy(this.productDataResponse, field, direction)
+    }
   },
 };
 </script>
