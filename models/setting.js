@@ -11,6 +11,7 @@ const settingSchema = new mongoose.Schema({
     page: { type: String, required: true },
     privacySelector: { type: String, required: true },
     gridItemSelector: { type: String, required: true },
+    paginationSelector: { type: String, required: false },
 }, { timestamps: true })
 
 //this package enhances the validation made against the schema for unique entries, and it makes it more like the other types of schema validation

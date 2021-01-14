@@ -36,6 +36,7 @@ router.route('/scrapesettings')
   router.route('/scrapesettings/:id')
   .get(settingController.get)
   .put(settingController.edit)
+  .delete(settingController.delete)
 
   //   .post(productController.create)
     // router.route('/products/:id/prices')

@@ -1,7 +1,7 @@
 const Setting = require('../models/setting')
 
 // INDEX handler
-function indexRoute(req, res, next) {
+function indexHandler(req, res, next) {
     Setting
         //access the query parameters in the url using req.query
         .find(req.query)
@@ -10,7 +10,7 @@ function indexRoute(req, res, next) {
 }
 
 // GET handler
-function getRoute(req, res, next) {
+function getHandler(req, res, next) {
     Setting
         //access the query parameters in the url using req.query
         .find(req.query)
@@ -20,7 +20,7 @@ function getRoute(req, res, next) {
 
 
 // CREATE product price
-function createRoute(req, res, next) {
+function createHandler(req, res, next) {
     Setting
         .create(req.body)
         .then(scrapeData => res.status(201).json(scrapeData))
@@ -29,7 +29,7 @@ function createRoute(req, res, next) {
 
 
 // EDIT scrape setting
-function editRoute(req, res, next) {
+function editHandler(req, res, next) {
     const {_id} = req.body
     Setting
         //access the query parameters in the url using req.query
@@ -41,11 +41,20 @@ function editRoute(req, res, next) {
         .catch(next)
 }
 
+// DELETE handler
+function deleteHandler(req, res, next) {
+    Setting
+        .findByIdAndRemove(req.params.id)
+        .then(() => res.sendStatus(204))
+        .catch(next)
+}
+
 
 //build up the export object so it can simply be imported in the router file
 module.exports = {
-    create: createRoute,
-    index: indexRoute,
-    get: getRoute,
-    edit: editRoute,
+    create: createHandler,
+    index: indexHandler,
+    get: getHandler,
+    edit: editHandler,
+    delete: deleteHandler,
 }
