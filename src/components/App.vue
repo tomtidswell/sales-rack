@@ -34,11 +34,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("../assets/shopping-centre.jpg");
-  background-color: #fbf4f5;
-  background-attachment: fixed;
-  background-size: cover;
-  background-blend-mode: overlay;
+  background-color: #f3e5e5;
   color: #2c3e50;
   display: flex;
   flex-direction: column;

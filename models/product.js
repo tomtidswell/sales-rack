@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema({
     priceHistory: [ priceSchema ],
     // prices: { type: mongoose.Schema.ObjectId, ref: 'Prices' },
     main_image: { type: String },
-    hover_image: { type: String },
+    // hover_image: { type: String },
     images: { type: Array },
     source: { type: String },
     retailer: { type: String },
@@ -40,7 +40,7 @@ const productSchema = new mongoose.Schema({
     // secret: { type: String, get: obfuscate },
 }, {
     timestamps: true, 
-    toObject: { getters: true },
+    toObject: { getters: false },
     toJSON: { getters: true },
 })
 

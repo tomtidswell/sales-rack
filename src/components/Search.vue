@@ -7,8 +7,10 @@
         </span>
     </section>
 
-    <div class="field">
-      <input class="input is-medium search-box" type="text" v-model="searchString" placeholder="Find some amazing deals..." @input="search"/>
+    <div class="field search-field">
+      <div class="icon">O</div>
+      <input class="input is-medium search-box" type="text" v-model="searchString" placeholder="Find some amazing deals..." 
+             @input.prevent="debouncedSearch()" @focus="searchFocusHandler" @blur="searchFocusHandler"/>
       <div class="dropdown-content search-suggestions" v-if="currentWord && currentWord.length > 1 && keyMatches.length">
         <a href="#" class="dropdown-item" v-for="match in keyMatches" :key="match">{{match}}</a>
       </div>
@@ -19,11 +21,11 @@
 <script>
 import _ from 'lodash'
 
+
 export default {
-  name: "Products",
+  name: "Search",
   components: {},
   props: {
-    msg: String,
   },
   data() {
     return {
@@ -36,7 +38,8 @@ export default {
   },
   created() {
     this.getData()
-    this.search()
+    // this.search()
+    this.debouncedSearch = _.debounce(this.search.bind(this), 300)
   },
   computed: {
     searchArray: function () {
@@ -45,9 +48,6 @@ export default {
     currentWord: function () {
       return _.chain(this.searchString).split(' ').nth(-1).value()
     },
-    // queryBody: function () {
-    //   return _.chain(this.searchString).split(' ').nth(-1).value()
-    // },
     keyMatches: function () {
       return _.filter(this.keys, k=>{
         return _.includes(k.toLowerCase(), this.currentWord.toLowerCase())
@@ -55,11 +55,15 @@ export default {
     },
   },
   methods: {
+    searchFocusHandler({type}){
+      this.$emit('focussed', type==='focus' || this.searchString)
+    },
     async getData() {
       const res = await fetch("./keywords")
       this.keys = res.status === 200 ? await res.json() : []
     },
     async search() {
+      if(this.searchString === "") this.$emit('newResults', [])
       const res = await fetch("./products/search", {
         method: 'PUT', // or 'PUT'
         headers: { 'Content-Type': 'application/json' },
@@ -73,7 +77,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 a {
   color: #42b983;
 }
@@ -95,16 +99,32 @@ a {
   justify-content: flex-start;
   margin: 0 10px;
 }
-.field{
+.field.search-field{
   position: relative;
+  .icon{
+    position: absolute;
+    height: 100%;
+    left: -30px;
+  }
 }
 .search-box{
     border-radius: 0;
     border: 0;
-    border-bottom: 3px solid #d82e4c;
-    background: #ffffffa1;
+    border-color: white;
+    border-bottom: 3px solid white;
+    background: transparent;
     outline: 0;
-    color: #ff6f88;
+    color: white;
+    box-shadow: none;
+    &::placeholder{
+      color: white;
+    }
+    &:active,
+    &:focus,
+    &:hover{
+      border-color: white;
+      box-shadow: none;
+    }
 }
 .search-suggestions{
   margin: 0 25px;

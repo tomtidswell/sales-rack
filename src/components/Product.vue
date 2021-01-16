@@ -1,24 +1,29 @@
 <template>
-  <div class="product" v-show="lastSeen !== 'Not recently'">
+  <article class="product" v-show="lastSeen !== 'Not recently'">
     <a :href="url" class="name" target="_blank">{{ name }}</a>
     <div class="line"></div>
-    <div class="discount-container">
-      <div class="discount" v-if="discount">{{ discount }}</div>
-    </div>
-    <a :href="url" class="img-link image is-square" target="_blank">
-      <img class="main" :src="image" />
-    </a>
-    <div class="badge-container" v-if="badge">
-      <div class="badge">{{ badge }}</div>
-    </div>
     <div class="prices">
-      {{ price }}
-      <span class="prices previous-price" v-if="prevPrice">{{
+      <span class="price">{{ price }}</span>
+      <span class="price previous-price" v-if="prevPrice">{{
         prevPrice
       }}</span>
     </div>
-    <div class="last-seen">⏱{{ lastSeen }}</div>
-  </div>
+    <div class="discount-container">
+      <div class="discount" v-if="discount">{{ discount }}</div>
+    </div>
+    <div class="line"></div>
+    <a :href="url" class="img-link" target="_blank">
+      <b-image class="main"
+            :src="image"
+            alt="A random image"
+            ratio="2by3" ></b-image>
+
+    </a>
+    <footer class="product-footer">
+      <!-- <div class="badge">{{ badge }}</div> -->
+      <div class="last-seen">⏱ {{ lastSeen }}</div>
+    </footer>
+  </article>
 </template>
 
 <script>
@@ -83,8 +88,9 @@ export default {
   flex-direction: column;
   box-shadow: 10px 10px 14px 0px #9a9a9a2b, -10px -10px 14px 0px #e2e2e221;
   border-radius: 5px;
-  padding: 10px;
-  backdrop-filter: blur(7px);
+  overflow: hidden;
+  /* padding: 10px; */
+  /* backdrop-filter: blur(7px); */
   background-color: #ffffff;
   color: #546e7a;
 }
@@ -104,8 +110,8 @@ a {
   color: #546e7a;
 }
 img.main {
-  width: 100%;
-  object-fit: contain;
+  /* width: 100%;
+  object-fit: contain; */
 }
 .discount-container{
   position: relative;
@@ -130,8 +136,7 @@ img.main {
 }
 .line {
   height: 1px;
-  width: 80%;
-  margin: 10px;
+  width: 100%;
   background: #d0d9e0;
   align-self: center;
 }
@@ -141,17 +146,19 @@ img.main {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  padding: 4px 6px;
 }
 .prices {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 6px;
+  flex-grow: 1;
+  padding: 4px 6px;
 }
 .previous-price {
   text-decoration: line-through;
 }
-.badge-container {
+footer.product-footer {
   position: relative;
 }
 .badge {
@@ -164,8 +171,15 @@ img.main {
   width: fit-content;
 }
 .last-seen {
-  font-size: 0.8em;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
   display: flex;
   justify-content: flex-end;
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(3px);
+  border-radius: 5px;
+  font-size: 0.8em;
+  padding: 4px;
 }
 </style>

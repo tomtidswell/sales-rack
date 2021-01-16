@@ -1,8 +1,8 @@
 <template>
   <div class="products">
-    <section class="hero is-bold is-medium">
+    <section class="hero is-bold is-danger is-medium" :class="{ 'is-large': searchFocussed }">
       <div class="hero-body">
-        <Search @newResults="handleResults" />
+        <Search @newResults="handleResults" @focussed="searchFocusHandler"/>
         <div class="search-results" v-if="searchResults && searchResults.length">
           <ProductMini
             v-for="product in searchResults"
@@ -15,69 +15,49 @@
     </section>
 
     <section class="section">
-      <h1 class="title">Get some inspiration</h1>
-      <p class="heading">Following</p>
-    </section>
-
-
-    <section class="section">
-      <b-carousel-list v-model="test" :data="productData.slice(0, 8)" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+      <!-- <h1 class="title">We've found you some cracking deals</h1> -->
+      <h2 class="subtitle">Homeware deals</h2>
+      <b-carousel-list :data="productData.slice(0, 8)" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
         <template slot="item" slot-scope="product">
-          <div class="card">
-            <Product
-              class="best-product"
-              :data="product"
-              :key="product._id"
-            />
-          </div>
+          <div class="image-header" v-if="product.header">I'm the header</div>
+          <Product v-else
+            class="best-product"
+            :data="product"
+            :key="product._id"
+          />
         </template>
       </b-carousel-list>
     </section>
 
 
     <section class="section">
-        <div class="subtitle">Kitchen deals</div>
-        <figure class="image is-128x128">
-          <img src="../assets/kitchen.jpeg">
-        </figure>
-        <div class="scroller-wrap">
-          <div class="scroller-content is-flex">
-            <Product
-              v-for="product in productData.slice(0, 8)"
-              class="best-product"
-              :data="product"
-              :key="product._id"
-            />
-            <div class="more button is-primary is-rounded is-outlined">
-              More
-            </div>
-            <div class="spacer"></div>
-          </div>
-        </div>
+      <h2 class="subtitle">Kitchen deals</h2>
+      <b-carousel-list :data="kitchenDeals" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+      <template slot="item" slot-scope="product">
+        <div class="image-header" v-if="product.header">Kitchen deals</div>
+        <Product v-else
+          class="best-product"
+          :data="product"
+          :key="product._id"
+        />
+      </template>
+      </b-carousel-list>
     </section>
 
 
 
     <section class="section">
-        <div class="subtitle">Homeware deals</div>
-        <div class="scroller-wrap">
-          <div class="scroller-content is-flex">
-            <Product
-              v-for="product in productData.slice(10, 18)"
-              class="best-product"
-              :data="product"
-              :key="product._id"
-            />
-            <div class="more button is-primary is-rounded is-outlined">
-              More
-            </div>
-            <div class="spacer"></div>
-          </div>
-        </div>
+      <div class="subtitle">Tableware deals</div>
+      <b-carousel-list :data="productData.slice(18, 27)" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+      <template slot="item" slot-scope="product">
+          <Product
+            class="best-product"
+            :data="product"
+            :key="product._id"
+          />
+      </template>
+      </b-carousel-list>
     </section>
-
-
-
 
 
     <section class="section">
@@ -152,10 +132,10 @@ export default {
   props: {},
   data() {
     return {
-      message: "Hello",
       test: 0,
       productData: [],
       searchResults: [],
+      searchFocussed: false,
     };
   },
   created() {
@@ -163,19 +143,24 @@ export default {
   },
   mounted() {},
   computed: {
-    csvData: function () {
-      return ""; //this.$papa.parse('../../data/marksandspencer-home.csv', {delimiter: ",", newline: ""})
+    kitchenDeals: function () {
+      const products = this.productData.slice(9, 18)
+      return [{header:true},...products]
     },
   },
   watch: {},
   methods: {
+    searchFocusHandler(e){
+      console.log(e)
+      this.searchFocussed = e
+    },
     async getData() {
       const res = await fetch("./products")
       this.productData = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
     },
     handleResults(newSearchResults) {
-      console.log("Need to draw:", newSearchResults)
+      // console.log("Need to draw:", newSearchResults)
       this.searchResults = newSearchResults
     },
   },
@@ -193,6 +178,26 @@ a {
 section.products {
   display: flex;
   flex-direction: column;
+}
+
+.image-header{
+  background-image: url(../assets/kitchen.jpeg);
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  color: #ce3c3c;
+  font-size: 3em;
+  display: flex;
+  align-items: flex-start;
+  text-align: center;
+  letter-spacing: -2px;
+  text-shadow: 0px 0px 2px #84118c;
+  line-height: 1em;
+  padding-top: 40px;
+}
+
+.hero-body{
+  transition: all 1s;
 }
 
 .search-results{
@@ -223,10 +228,6 @@ section.products {
 }
 .best-product {
   min-width: 150px;
-  margin-right: 15px;
-  &:last-child {
-    margin-right: 20px;
-  }
 }
 .more {
   align-self: center;
