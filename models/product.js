@@ -30,6 +30,7 @@ const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     url: { type: String, required: true, unique: true },
     priceHistory: [ priceSchema ],
+    price: priceSchema,
     // prices: { type: mongoose.Schema.ObjectId, ref: 'Prices' },
     main_image: { type: String },
     // hover_image: { type: String },
@@ -92,6 +93,7 @@ productSchema.methods.addPrice = function (priceData, forceUpdate) {
         }
     }
     
+    this.price = priceData
     // compare the new values with the old ones
     const prevPriceData = this.priceHistory.length ? this.priceHistory[this.priceHistory.length - 1] : {}
     if (forceUpdate ||

@@ -1,23 +1,17 @@
 <template>
-  <article class="product" v-show="lastSeen !== 'Not recently'">
+  <article class="product">
     <a :href="url" class="name" target="_blank">{{ name }}</a>
     <div class="line"></div>
     <div class="prices">
       <span class="price">{{ price }}</span>
-      <span class="price previous-price" v-if="prevPrice">{{
-        prevPrice
-      }}</span>
+      <span class="price prev-price" v-if="prevPrice">{{prevPrice}}</span>
     </div>
     <div class="discount-container">
       <div class="discount" v-if="discount">{{ discount }}</div>
     </div>
     <div class="line"></div>
     <a :href="url" class="img-link" target="_blank">
-      <b-image class="main"
-            :src="image"
-            alt="A random image"
-            ratio="2by3" ></b-image>
-
+      <b-image class="main" :src="image" ratio="2by3"></b-image>
     </a>
     <footer class="product-footer">
       <!-- <div class="badge">{{ badge }}</div> -->
@@ -43,33 +37,33 @@ export default {
   computed: {
     // a computed getter
     name: function () {
-      return this.data.name;
+      return this.data.name || 'product name'
     },
     price: function () {
-      return this.data.latestPrice.price;
-    },
-    discount: function () {
-      return _.get(this.data, 'latestPrice.discount["%"]')
-    },
-    priceDescription: function () {
-      return (this.data.latestPrice.priceDescription || '')
-        .replace("Price", "")
-        .replace("price", "")
-        .replace("Current", "")
-        .trim();
+      return _.get(this.data,'price.price') || 0
     },
     prevPrice: function () {
-      return this.data.latestPrice.prevPrice;
+      return _.get(this.data,'price.prevPrice') || 0
     },
+    discount: function () {
+      return _.get(this.data, 'price.discount["%"]')
+    },
+    // priceDescription: function () {
+    //   return (this.data.latestPrice.priceDescription || '')
+    //     .replace("Price", "")
+    //     .replace("price", "")
+    //     .replace("Current", "")
+    //     .trim();
+    // },
     url: function () {
       return this.data.url;
     },
-    badge: function () {
-      return (this.data.latestPrice.badge || this.priceDescription).replace(
-        "(Price Includes Saving)",
-        ""
-      );
-    },
+    // badge: function () {
+    //   return (this.data.latestPrice.badge || this.priceDescription).replace(
+    //     "(Price Includes Saving)",
+    //     ""
+    //   );
+    // },
     image: function () {
       return this.data.main_image;
     },
@@ -155,7 +149,7 @@ img.main {
   flex-grow: 1;
   padding: 4px 6px;
 }
-.previous-price {
+.prev-price {
   text-decoration: line-through;
 }
 footer.product-footer {

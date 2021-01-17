@@ -31,6 +31,9 @@
               <div><strong>Pagination Selector</strong></div>
               <div>{{ props.row.paginationSelector }}</div>
               <br/>
+              <div><strong>Pagination url pattern</strong></div>
+              <div>{{ props.row.urlPaginationPattern }}</div>
+              <br/>
               <div class="buttons">
                 <b-button size="is-small" type="is-warning" @click="handleEditClick(props)">Edit</b-button>
                 <b-button size="is-small" type="is-danger" @click="handleDeleteClick(props)">Delete</b-button>
@@ -70,6 +73,9 @@
       <b-field label="Pagination Selector">
         <b-input v-model="editingRowData.paginationSelector"></b-input>
       </b-field>
+      <b-field label="Pagination url pattern">
+        <b-input v-model="editingRowData.urlPaginationPattern"></b-input>
+      </b-field>
       <div class="buttons">
         <b-button type="is-success is-small" @click="handleEditSaveClick" :loading="editSaveWaiting">Save</b-button>
         <b-button type="is-success is-small is-light" @click="editingRowData = {}" :loading="editSaveWaiting">Cancel</b-button>
@@ -94,6 +100,9 @@
       </b-field>
       <b-field label="Pagination Selector">
         <b-input v-model="newRowData.paginationSelector"></b-input>
+      </b-field>
+      <b-field label="Pagination url pattern">
+        <b-input v-model="newRowData.urlPaginationPattern"></b-input>
       </b-field>
       <div class="buttons">
         <b-button type="is-success is-small" @click="handleNewSaveClick" :loading="newSaveWaiting">Save</b-button>

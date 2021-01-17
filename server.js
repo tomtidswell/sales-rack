@@ -1,4 +1,5 @@
 // all the consts
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
@@ -9,7 +10,14 @@ const { requestLogger } = require('./lib/logger')
 const errorHandler = require('./lib/errorHandler')
 
 //connect to the database
-mongoose.connect(dbURI, { useNewUrlParser: true, useFindAndModify: false }, ()=> console.log('Database connected'))
+console.log(dbURI)
+console.log(dbURI)
+
+mongoose.connect(
+    dbURI, 
+    { useNewUrlParser: true, useFindAndModify: false }, 
+    (e)=> console.log('Database connected',e)
+)
 
 // register bodyparser before the router so that it can make use of its functionality
 app.use(bodyParser.json())

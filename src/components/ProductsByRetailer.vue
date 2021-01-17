@@ -2,12 +2,13 @@
   <section class="products">
       <div class="section">
         <div class="columns">
-        <div class="column">
-            <div class="subtitle">
-                {{ retailerData.displayName }}
-            </div>
-        </div>
-        <Filters class="column" @sort="handleSort" />
+          <div class="column">
+              <div class="subtitle">
+                  {{ retailerData.displayName }}
+              </div>
+          </div>
+          <Filters class="column" @sort="handleSort" />
+          <b-button class="refresh" @click="refreshData">Refresh data</b-button>
         </div>
       </div>
     <div class="grid">
@@ -61,12 +62,16 @@ export default {
     }
   },
   methods: {
+    refreshData() {
+      this.getData()
+    },
     async getData() {
       const res = await fetch(`../retailer/${this.retailer}`)
       // console.log("Endpoint response:", res)
       this.productDataResponse = res.status === 200 ? await res.json() : []
       // console.log("Data:", this.productData)
-      this.productData = _.orderBy(this.productDataResponse, 'latestPrice.discount.%','desc')
+      this.productDataResponse = _.filter(this.productDataResponse, 'price') //make sure we have price data for the item
+      this.productData = _.orderBy(this.productDataResponse, 'price.discount.%','desc')
       // console.log("Sorted data:", this.productData)
     },
     handleSort: function (e) {
@@ -94,6 +99,6 @@ section.products{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   grid-gap: 20px;
-  padding: 0 20px;
+  padding: 0 20px 60px 20px;
 }
 </style>

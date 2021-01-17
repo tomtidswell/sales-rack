@@ -8,7 +8,10 @@ function indexHandler(req, res, next) {
     console.log(timeBoundary)
     Product
         //access the query parameters in the url using req.query
-        .find({ updatedAt: { $gte: timeBoundary } })
+        .find(
+            { updatedAt: { $gte: timeBoundary }, price: { $exists: true } }, 
+            ['category', 'name', 'main_image', 'updatedAt', 'price.price', 'price.prevPrice', 'price.discount']
+        )
         // .sort({ 'updatedAt': -1 })
         .then(products => res.status(200).json(products))
         .catch(next)
@@ -21,8 +24,10 @@ function retailerIndexHandler(req, res, next) {
     const timeBoundary = new Date(Date.now() - (3000 * 60000)) // 3000 minutes
     Product
         //access the query parameters in the url using req.query
-        .find({ retailer, updatedAt: { $gte: timeBoundary } })
-        // .sort({ 'updatedAt': -1 })
+        .find(
+            { retailer, updatedAt: { $gte: timeBoundary }, price: { $exists: true } }, 
+            ['category', 'name', 'main_image', 'updatedAt', 'price.price', 'price.prevPrice', 'price.discount']
+        )
         .then(products => res.status(200).json(products))
         .catch(next)
 }
@@ -34,7 +39,10 @@ function categoryIndexHandler(req, res, next) {
     const timeBoundary = new Date(Date.now() - (3000 * 60000)) // 3000 minutes
     Product
         //access the query parameters in the url using req.query
-        .find({ category, updatedAt: { $gte: timeBoundary } })
+        .find(
+            { category, updatedAt: { $gte: timeBoundary }, price: { $exists: true } }, 
+            ['category', 'name', 'main_image', 'updatedAt', 'price.price', 'price.prevPrice', 'price.discount']
+        )
         // .sort({ 'updatedAt': -1 })
         .then(products => res.status(200).json(products))
         .catch(next)
@@ -64,6 +72,7 @@ function editHandler(req, res, next) {
             if (!product) throw new Error('Not Found')
             // the force parameter will force a price update
             product.addPrice(priceData, req.query.force === 'true')
+            // if (product.id) delete product.id
             console.log('Saving:',product)
             return product.save()
         })
