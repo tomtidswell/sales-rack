@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "serve:back": "nodemon server.js",
+    "serve:lambda": "netlify-lambda serve functions",
     "build": "vue-cli-service build",
+    "build:lambda": "netlify-lambda build functions",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -17,6 +19,7 @@
     "lodash": "^4.17.20",
     "mongoose": "^5.10.15",
     "mongoose-unique-validator": "^2.0.3",
+    "serverless-http": "^2.6.1",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9"
   },
@@ -28,6 +31,7 @@
     "csv-loader": "^3.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "netlify-lambda": "^2.0.2",
     "sass": "^1.32.0",
     "sass-loader": "^10.1.0",
     "vue-template-compiler": "^2.6.11"
