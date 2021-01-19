@@ -66,7 +66,7 @@ export default {
       this.getData()
     },
     async getData() {
-      const res = await fetch(`../category/${this.category}`)
+      const res = await fetch(`../api/category/${this.category}`)
       // console.log("Endpoint response:", res)
       this.productDataResponse = res.status === 200 ? await res.json() : []
       // console.log("Data:", this.productDataResponse)

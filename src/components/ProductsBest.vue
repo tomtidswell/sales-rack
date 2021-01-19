@@ -155,7 +155,7 @@ export default {
       this.searchFocussed = e
     },
     async getData() {
-      const res = await fetch("./products")
+      const res = await fetch("./api/products")
       this.productData = res.status === 200 ? await res.json() : []
       console.log("Data:", this.productData)
     },

@@ -59,12 +59,12 @@ export default {
       this.$emit('focussed', type==='focus' || this.searchString)
     },
     async getData() {
-      const res = await fetch("./keywords")
+      const res = await fetch("./api/keywords")
       this.keys = res.status === 200 ? await res.json() : []
     },
     async search() {
       if(this.searchString === "") this.$emit('newResults', [])
-      const res = await fetch("./products/search", {
+      const res = await fetch("./api/products/search", {
         method: 'PUT', // or 'PUT'
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(this.searchArray),
