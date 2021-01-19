@@ -1,5 +1,4 @@
-
-
+// const path = require('path')
 
 module.exports = {
   configureWebpack: {
@@ -8,9 +7,17 @@ module.exports = {
     }
   },
   devServer: {
-    proxy: "http://localhost:4000/api",
-    headers: { "Access-Control-Allow-Origin": "*" },
-    https: false,
+    // contentBase: path.resolve('src'),
+    hot: true,
+    open: false,
+    watchContentBase: true,
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9000/.netlify/functions/server/',
+        secure: false
+      }
+    }
   },
   pages: {
     index: {
