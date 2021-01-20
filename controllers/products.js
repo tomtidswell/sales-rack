@@ -9,8 +9,8 @@ function indexHandler(req, res, next) {
     Product
         //access the query parameters in the url using req.query
         .find(
-            { updatedAt: { $gte: timeBoundary }, price: { $exists: true } }, 
-            ['category', 'name', 'main_image', 'updatedAt', 'price.price', 'price.prevPrice', 'price.discount']
+            { updatedAt: { $gte: timeBoundary } }, //, price: { $exists: true }
+            ['category', 'name', 'image', 'url', 'updatedAt', 'price', 'prevPrice', 'disc%', 'disc£']
         )
         // .sort({ 'updatedAt': -1 })
         .then(products => res.status(200).json(products))
@@ -25,8 +25,8 @@ function retailerIndexHandler(req, res, next) {
     Product
         //access the query parameters in the url using req.query
         .find(
-            { retailer, updatedAt: { $gte: timeBoundary }, price: { $exists: true } }, 
-            ['category', 'name', 'main_image', 'updatedAt', 'price.price', 'price.prevPrice', 'price.discount']
+            { retailer, updatedAt: { $gte: timeBoundary } }, 
+            ['category', 'name', 'image', 'url', 'updatedAt', 'price', 'prevPrice', 'disc%', 'disc£']
         )
         .then(products => res.status(200).json(products))
         .catch(next)
@@ -40,8 +40,8 @@ function categoryIndexHandler(req, res, next) {
     Product
         //access the query parameters in the url using req.query
         .find(
-            { category, updatedAt: { $gte: timeBoundary }, price: { $exists: true } }, 
-            ['category', 'name', 'main_image', 'updatedAt', 'price.price', 'price.prevPrice', 'price.discount']
+            { category, updatedAt: { $gte: timeBoundary } }, 
+            ['category', 'name', 'image', 'url', 'updatedAt', 'price', 'prevPrice', 'disc%', 'disc£']
         )
         // .sort({ 'updatedAt': -1 })
         .then(products => res.status(200).json(products))

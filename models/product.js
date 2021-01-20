@@ -4,20 +4,20 @@ const mongoose = require('mongoose')
 const { parsePrice, parseDiscount } = require('../lib/utils')
 
 
-const priceSchema = new mongoose.Schema({
-    price: { type: String, required: false },
-    priceRange: { type: String, required: false },
-    priceDescription: { type: String, required: false },
-    prevPrice: { type: String, required: false },
-    prevPriceDescription: { type: String, required: false },
-    discount: { 
-        "%": { type: Number, required: false, default: 0 },
-        "£": { type: Number, required: false, default: 0 },
-    },
-    badge: { type: String, required: false },
-}, { 
-    timestamps: true,
-})
+// const priceSchema = new mongoose.Schema({
+//     price: { type: String, required: false },
+//     priceRange: { type: String, required: false },
+//     priceDescription: { type: String, required: false },
+//     prevPrice: { type: String, required: false },
+//     prevPriceDescription: { type: String, required: false },
+//     discount: { 
+//         "%": { type: Number, required: false, default: 0 },
+//         "£": { type: Number, required: false, default: 0 },
+//     },
+//     badge: { type: String, required: false },
+// }, { 
+//     timestamps: true,
+// })
 
 
 // example setter
@@ -29,27 +29,27 @@ const priceSchema = new mongoose.Schema({
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     url: { type: String, required: true, unique: true },
-    priceHistory: [ priceSchema ],
-    price: priceSchema,
+    price: { type: String, required: false },
+    prevPrice: { type: String, required: false },
+    priceRange: { type: String, required: false },
+    "disc%": { type: Number, required: false, default: 0 },
+    "disc£": { type: Number, required: false, default: 0 },
+    badge: { type: String, required: false },
     // prices: { type: mongoose.Schema.ObjectId, ref: 'Prices' },
-    main_image: { type: String },
-    // hover_image: { type: String },
-    images: { type: Array },
+    image: { type: String },
     source: { type: String },
     retailer: { type: String },
     category: { type: String },
     // secret: { type: String, get: obfuscate },
 }, {
     timestamps: true, 
-    toObject: { getters: false },
-    toJSON: { getters: true },
 })
 
 // add a virtual field of latest price, which is just the most recent item from the price history
-productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
-    if (!doc.priceHistory) return undefined
-    return doc.priceHistory[doc.priceHistory.length - 1]
-})
+// productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
+//     if (!doc.priceHistory) return undefined
+//     return doc.priceHistory[doc.priceHistory.length - 1]
+// })
 
 // add a virtual field of active discount, which is just the most recent item from the price history
 // productSchema.virtual('discount').get((value, virtual, doc)=>{
@@ -67,6 +67,7 @@ productSchema.virtual('latestPrice').get((value, virtual, doc)=>{
 
 // helper function to handle adding a new price
 productSchema.methods.addPrice = function (priceData, forceUpdate) {
+    return
     const { price, priceRange } = parsePrice(priceData.price)
     const { price: prevPrice } = parsePrice(priceData.prevPrice)
     console.log('Parsed prices:', price, priceRange)
