@@ -141,6 +141,7 @@ img.main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   padding: 4px 6px;
+  min-height: 50px;
 }
 .prices {
   display: flex;

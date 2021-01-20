@@ -17,7 +17,7 @@
     <section class="section">
       <!-- <h1 class="title">We've found you some cracking deals</h1> -->
       <h2 class="subtitle">Homeware deals</h2>
-      <b-carousel-list :data="productData.slice(0, 8)" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+      <b-carousel-list :data="productData.slice(0, 8)" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
         <template slot="item" slot-scope="product">
           <div class="image-header" v-if="product.header">I'm the header</div>
           <Product v-else
@@ -32,7 +32,7 @@
 
     <section class="section">
       <h2 class="subtitle">Kitchen deals</h2>
-      <b-carousel-list :data="kitchenDeals" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+      <b-carousel-list :data="kitchenDeals" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
       <template slot="item" slot-scope="product">
         <div class="image-header" v-if="product.header">Kitchen deals</div>
         <Product v-else
@@ -48,7 +48,7 @@
 
     <section class="section">
       <div class="subtitle">Tableware deals</div>
-      <b-carousel-list :data="productData.slice(18, 27)" :items-to-show="4" :arrow="true" :arrow-hover="false" :repeat="true">
+      <b-carousel-list :data="productData.slice(18, 27)" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
       <template slot="item" slot-scope="product">
           <Product
             class="best-product"
@@ -132,7 +132,7 @@ export default {
   props: {},
   data() {
     return {
-      test: 0,
+      windowWidth: null,
       productData: [],
       searchResults: [],
       searchFocussed: false,
@@ -141,15 +141,30 @@ export default {
   created() {
     this.getData();
   },
-  mounted() {},
+  mounted() {
+    window.addEventListener('resize', this.onResize)
+    this.element = this.$el.clientWidth
+    this.onResize()
+  },
+  beforeDestroy() {
+    // Unregister the event listener before destroying this Vue instance
+    window.removeEventListener('resize', this.onResize)
+  },
   computed: {
     kitchenDeals: function () {
       const products = this.productData.slice(9, 18)
       return [{header:true},...products]
     },
+    showTiles: function () {
+      if(!this.windowWidth) return 4
+      return Math.floor(this.windowWidth / 200)
+    },
   },
   watch: {},
   methods: {
+    onResize(){
+      this.windowWidth = this.$el.clientWidth
+    },
     searchFocusHandler(e){
       console.log(e)
       this.searchFocussed = e
