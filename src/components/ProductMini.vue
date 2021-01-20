@@ -15,9 +15,9 @@
         </span>
       </div>
       <div class="last-seen">⏱{{ lastSeen }}</div>
-      <div class="badge-container" v-if="badge">
-        <div class="badge">{{ badge }}</div>
-      </div>
+      <!-- <div class="badge-container" v-if="badge"> -->
+        <!-- <div class="badge">{{ badge }}</div> -->
+      <!-- </div> -->
     </article>
   </div>
 </template>
@@ -39,35 +39,29 @@ export default {
   computed: {
     // a computed getter
     name: function () {
-      return this.data.name;
+      return _.get(this.data, 'name')
     },
     price: function () {
-      return this.data.latestPrice.price;
+      return _.get(this.data, 'price')
     },
     discount: function () {
-      return _.get(this.data, 'latestPrice.discount["%"]')
+      return _.get(this.data, 'disc%')
     },
     priceDescription: function () {
-      return (this.data.latestPrice.priceDescription || '')
+      return (this.data.priceDescription || '')
         .replace("Price", "")
         .replace("price", "")
         .replace("Current", "")
         .trim();
     },
     prevPrice: function () {
-      return this.data.latestPrice.prevPrice;
+      return _.get(this.data, 'prevPrice')
     },
     url: function () {
-      return this.data.url;
-    },
-    badge: function () {
-      return (this.data.latestPrice.badge || this.priceDescription).replace(
-        "(Price Includes Saving)",
-        ""
-      );
+      return _.get(this.data, 'url')
     },
     image: function () {
-      return this.data.main_image;
+      return _.get(this.data, 'image')
     },
     lastSeen: function () {
       return timeDiffToNow(this.data.updatedAt);

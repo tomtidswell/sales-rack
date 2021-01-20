@@ -40,13 +40,13 @@ export default {
       return this.data.name || 'product name'
     },
     price: function () {
-      return _.get(this.data,'price.price') || 0
+      return _.get(this.data,'price') || 0
     },
     prevPrice: function () {
-      return _.get(this.data,'price.prevPrice') || 0
+      return _.get(this.data,'prevPrice') || 0
     },
     discount: function () {
-      return _.get(this.data, 'price.discount["%"]')
+      return _.get(this.data, 'disc%')
     },
     // priceDescription: function () {
     //   return (this.data.latestPrice.priceDescription || '')
@@ -65,7 +65,7 @@ export default {
     //   );
     // },
     image: function () {
-      return this.data.main_image;
+      return this.data.image;
     },
     lastSeen: function () {
       return timeDiffToNow(this.data.updatedAt);

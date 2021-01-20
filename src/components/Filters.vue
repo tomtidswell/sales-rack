@@ -40,16 +40,16 @@ export default {
     handleSort() {
       switch (this.sorting) {
         case "price-discount":
-          this.$emit('sort', ['price.discount.£', 'desc'])
+          this.$emit('sort', ['disc£', 'desc'])
           break;
         case "price-asc":
-          this.$emit('sort', ['price.price', 'asc'])
+          this.$emit('sort', ['price', 'asc'])
           break;
         case "price-desc":
-          this.$emit('sort', ['price.price', 'desc'])
+          this.$emit('sort', ['price', 'desc'])
           break;
         default:
-          this.$emit('sort', ['price.discount.%', 'desc'])
+          this.$emit('sort', ['disc%', 'desc'])
           break;
       }
     },
