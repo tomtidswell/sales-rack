@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const productController = require('../controllers/products')
+const searchController = require('../controllers/search')
 const scrapeController = require('../controllers/scrapes')
 const settingController = require('../controllers/settings')
 
@@ -8,15 +9,15 @@ router.route('/products')
   .put(productController.edit)
   //   .post(productController.create)
 
-router.route('/products/search')
-  .put(productController.search)
-
-  router.route('/products/:id')
-  .get(productController.show)
-  .delete(productController.delete)
+router.route('/search')
+  .get(searchController.search)
 
 router.route('/keywords')
-  .get(productController.keywords)
+  .get(searchController.keywords)
+
+router.route('/products/:id')
+  .get(productController.show)
+  .delete(productController.delete)
   
   
 router.route('/category/:category')
@@ -33,7 +34,7 @@ router.route('/scrapesettings')
   .get(settingController.index)
   .post(settingController.create)
   
-  router.route('/scrapesettings/:id')
+router.route('/scrapesettings/:id')
   .get(settingController.get)
   .put(settingController.edit)
   .delete(settingController.delete)
