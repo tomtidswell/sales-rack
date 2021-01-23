@@ -4,7 +4,7 @@ const Product = require('../models/product')
 // INDEX handler
 function indexHandler(req, res, next) {
     // { $gte:  }
-    const timeBoundary = new Date(Date.now() - (3000 * 60000)) // 3000 minutes
+    const timeBoundary = new Date(Date.now() - (5000 * 60000)) // 3000 minutes
     console.log(timeBoundary)
     Product
         //access the query parameters in the url using req.query
@@ -21,7 +21,7 @@ function indexHandler(req, res, next) {
 function retailerIndexHandler(req, res, next) {
     const { retailer } = req.params
     console.log('retailer:', retailer)
-    const timeBoundary = new Date(Date.now() - (3000 * 60000)) // 3000 minutes
+    const timeBoundary = new Date(Date.now() - (5000 * 60000)) // 3000 minutes
     Product
         //access the query parameters in the url using req.query
         .find(
@@ -36,7 +36,7 @@ function retailerIndexHandler(req, res, next) {
 function categoryIndexHandler(req, res, next) {
     const { category } = req.params
     console.log('category:', category)
-    const timeBoundary = new Date(Date.now() - (3000 * 60000)) // 3000 minutes
+    const timeBoundary = new Date(Date.now() - (5000 * 60000)) // 3000 minutes
     Product
         //access the query parameters in the url using req.query
         .find(

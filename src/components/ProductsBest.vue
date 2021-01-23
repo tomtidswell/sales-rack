@@ -3,14 +3,13 @@
     <section class="hero is-bold is-danger is-medium" :class="{ 'is-large': searchFocussed }">
       <div class="hero-body">
         <Search @newResults="handleResults" @focussed="searchFocusHandler"/>
-        <div class="search-results" v-if="searchResults && searchResults.length">
+        <!-- <div class="search-results" v-if="searchResults && searchResults.length">
           <ProductMini
             v-for="product in searchResults"
             class="search-result"
             :data="product"
-            :key="product._id"
-          />
-        </div>
+            :key="product._id" />
+        </div> -->
       </div>
     </section>
 
@@ -119,14 +118,14 @@
 
 <script>
 import Product from "./Product.vue";
-import ProductMini from "./ProductMini.vue";
+// import ProductMini from "./ProductMini.vue";
 import Search from "./Search.vue";
 
 export default {
   name: "ProductsBest",
   components: {
     Product,
-    ProductMini,
+    // ProductMini,
     Search,
   },
   props: {},

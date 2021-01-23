@@ -1,18 +1,33 @@
 <template>
   <div class="filters">
-    <section class="tags">
-        <span class="tag is-primary is-dark is-medium" v-for="(tag, i) in searchArray" :key="i">
-          {{tag}}
-          <button class="delete is-small"></button>
-        </span>
-    </section>
-
     <div class="field search-field">
       <div class="icon">O</div>
       <input class="input is-medium search-box" type="text" v-model="searchString" placeholder="Find some amazing deals..." 
              @input.prevent="debouncedSearch()" @focus="searchFocusHandler" @blur="searchFocusHandler"/>
-      <div class="dropdown-content search-suggestions" v-if="currentWord && currentWord.length > 1 && keyMatches.length">
-        <a href="#" class="dropdown-item" v-for="match in keyMatches" :key="match">{{match}}</a>
+      <div class="dropdown-content search-suggestions" v-if="searchString">
+        <div class="columns">
+          <div class="column is-one-fifth">
+            <div class="dropdown-item dropdown-heading">Categories</div>
+            <!-- <a href="#" class="dropdown-item" v-for="category in categories" :key="category">{{category}}</a> -->
+            <router-link v-for="(data, name) in categories" :key="name" class="dropdown-item" :to="{ path: `/category/${data.websafeName}` }"> 
+              {{data.displayName}} 
+              <span v-if="searchCatCount[data.websafeName]">({{searchCatCount[data.websafeName]}})</span>
+            </router-link>
+            <div class="dropdown-item dropdown-heading">Suggestions</div>
+            <a href="#" class="dropdown-item" v-for="auto in searchAutocomplete" :key="auto">{{auto}}</a>
+          </div>
+          <div class="column">
+            <div class="dropdown-item dropdown-heading">We found these deals</div>
+            <div class="products">
+              <ProductMini
+                v-for="product in searchProducts"
+                class="search-result"
+                :data="product"
+                :key="product._id" />
+            </div>
+            <!-- <a href="#" class="dropdown-item" v-for="(product, index) in searchProducts" :key="product.name + index">{{product.category}}{{product.name}}</a> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -20,24 +35,28 @@
 
 <script>
 import _ from 'lodash'
-
+import {category_config} from '../../lib/categories'
+import ProductMini from "./ProductMini.vue";
 
 export default {
   name: "Search",
-  components: {},
+  components: { ProductMini },
   props: {
   },
   data() {
     return {
       searchString: "",
-      searchResponse: [],
+      searchResponse: {},
+      searchProducts: [],
+      searchAutocomplete: [],
+      searchCatCount: [],
       sorting: "percent-discount",
       filterOptions: [],
       keys: [],
     }
   },
   created() {
-    this.getData()
+    // this.getData()
     // this.search()
     this.debouncedSearch = _.debounce(this.search.bind(this), 300)
   },
@@ -48,29 +67,26 @@ export default {
     currentWord: function () {
       return _.chain(this.searchString).split(' ').nth(-1).value()
     },
-    keyMatches: function () {
-      return _.filter(this.keys, k=>{
-        return _.includes(k.toLowerCase(), this.currentWord.toLowerCase())
-        })
+    categories: function () {
+      return category_config
     },
   },
   methods: {
     searchFocusHandler({type}){
       this.$emit('focussed', type==='focus' || this.searchString)
     },
-    async getData() {
-      const res = await fetch("./api/keywords")
-      this.keys = res.status === 200 ? await res.json() : []
-    },
     async search() {
       if(this.searchString === "") this.$emit('newResults', [])
-      const res = await fetch("./api/products/search", {
+      const res = await fetch("./api/search", {
         method: 'PUT', // or 'PUT'
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(this.searchArray),
       })
-      this.searchResponse = res.status === 200 ? await res.json() : []
-      this.$emit('newResults', this.searchResponse)
+      this.searchResponse = res.status === 200 ? await res.json() : {}
+      this.searchProducts = this.searchResponse.products || []
+      this.searchAutocomplete = this.searchResponse.auto || []
+      this.searchCatCount = this.searchResponse.categories || []
+      this.$emit('newResults', this.searchProducts)
     },
   },
 };
@@ -89,15 +105,6 @@ a {
   gap: 10px;
   width: 80%;
   margin: 0 auto;
-}
-.tags {
-  position: absolute;
-  top: -40px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin: 0 10px;
 }
 .field.search-field{
   position: relative;
@@ -126,13 +133,23 @@ a {
       box-shadow: none;
     }
 }
-.search-suggestions{
-  margin: 0 25px;
+.dropdown-heading{
+  font-weight: 900;
+}
+.dropdown-content.search-suggestions{
   position: absolute;
   z-index: 10;
   width: -webkit-fill-available;
+  margin: 0 25px;
+  top: 60px;
 }
 .check-option {
   display: block;
+}
+.products{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 20px;
+  padding: 0.375rem 1rem;
 }
 </style>

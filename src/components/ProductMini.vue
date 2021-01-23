@@ -1,5 +1,5 @@
 <template>
-  <div class="product" v-show="lastSeen !== 'Not recently'">
+  <div class="product">
     <div class="discount-container">
       <div class="discount" v-if="discount">{{ discount }}</div>
     </div>

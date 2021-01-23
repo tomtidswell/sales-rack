@@ -10,7 +10,7 @@ router.route('/products')
   //   .post(productController.create)
 
 router.route('/search')
-  .get(searchController.search)
+  .put(searchController.search)
 
 router.route('/keywords')
   .get(searchController.keywords)
