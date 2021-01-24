@@ -15,6 +15,70 @@ function keywordsHandler(req, res, next) {
         .catch(next)
 }
 
+// BEST handler
+function bestHandler(req, res, next) {
+    const { category } = req.params
+    if (!category) {
+        return res.status(200).json([])
+    }
+    const now = new Date()
+
+    console.log('category:', category)
+    // const timeBoundary = new Date(Date.now() - (5000 * 60000)) // 5000 minutes
+    Product.aggregate()
+        .search({
+            "compound": {
+                "must": [
+                    {
+                        "text": {
+                            "path": "category",
+                            "query": category,
+                            "fuzzy": {
+                                "maxEdits": 1,
+                                "maxExpansions": 100,
+                            }
+                        }
+                    }
+                ],
+                "should": [
+                    {
+                        "near": {
+                            "path": "updatedAt",
+                            "origin": now,
+                            "pivot": 86400000, //one day in ms - pivoting will reduce the score 
+                            // "gte": timeBoundary
+                            // score: { boost: { value: 2 } }
+                        },
+                    },
+                    {
+                        "near": {
+                            "path": "disc%",
+                            "origin": 100,
+                            "pivot": 20,
+                            "score": { boost: { value: 10 } }
+                        },
+                    }
+                ]
+            }
+        })
+        .project({
+            "_id": 0,
+            "name": 1,
+            "image": 1,
+            "url": 1,
+            "updatedAt": 1,
+            "price": 1,
+            "prevPrice": 1,
+            "category": 1,
+            "disc%": 1,
+            "disc£": 1,
+            "score": { "$meta": "searchScore" },
+        })
+        .limit(10)
+        .then(results => res.status(200).json(results))
+        .catch(next)
+}
+
 // SEARCH handler
 function searchHandler(req, res, next) {
     if (!req.body || !req.body.length) {
@@ -57,7 +121,7 @@ function searchHandler(req, res, next) {
                             "maxEdits": 2,
                             "maxExpansions": 100,
                         },
-                        score: { boost: { value: 2 } }
+                        "score": { boost: { value: 2 } }
                     }
                 }
             ]
@@ -136,5 +200,6 @@ function searchHandler(req, res, next) {
 //build up the export object so it can simply be imported in the Handlerr file
 module.exports = {
     keywords: keywordsHandler,
+    best: bestHandler,
     search: searchHandler,
 }

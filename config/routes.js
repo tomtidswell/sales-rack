@@ -12,8 +12,8 @@ router.route('/products')
 router.route('/search')
   .put(searchController.search)
 
-router.route('/keywords')
-  .get(searchController.keywords)
+router.route('/best/:category')
+  .get(searchController.best)
 
 router.route('/products/:id')
   .get(productController.show)
