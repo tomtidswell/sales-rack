@@ -72,8 +72,8 @@ productSchema.methods.addPrice = function (forceUpdate) {
     console.log('Parsed prices:', price, priceRange)
     
     if (priceRange) {
-        priceData.price = price
-        priceData.priceRange = priceRange
+        this.price = price
+        this.priceRange = priceRange
     }
     
     //calculate the discount, and overwrite the incoming discount value (if any)
