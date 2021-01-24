@@ -83,32 +83,19 @@ productSchema.methods.addPrice = function (forceUpdate) {
         this['disc£'] = prevPrice - price
         console.log('Calculated discount:', this['disc%'], this['disc£'])
     }
-    return
     
     // extract a discount from the savings message
-    if (priceData.badge && !priceData.discount){
-        const discount = parseDiscount(priceData.badge)
-        console.log('Extracted discount:', discount)
-        if (discount) {
-            // set this extracted result as the discount and remove the badge
-            priceData.discount = { '%': discount }
-            delete priceData.badge
-        }
-    }
+    // if (priceData.badge && !priceData.discount){
+        //     const discount = parseDiscount(priceData.badge)
+        //     console.log('Extracted discount:', discount)
+        //     if (discount) {
+            //         // set this extracted result as the discount and remove the badge
+    //         priceData.discount = { '%': discount }
+    //         delete priceData.badge
+    //     }
+    // }
     
-    this.price = priceData
-    // compare the new values with the old ones
-    const prevPriceData = this.priceHistory.length ? this.priceHistory[this.priceHistory.length - 1] : {}
-    if (forceUpdate ||
-        prevPriceData.price !== priceData.price ||
-        prevPriceData.priceDescription !== priceData.priceDescription ||
-        prevPriceData.prevPrice !== priceData.prevPrice ||
-        prevPriceData.prevPriceDescription !== priceData.prevPriceDescription ||
-        prevPriceData.badge !== priceData.badge
-    ) {
-        console.log('Updating')
-        this.priceHistory.push(priceData)
-    }
+    // TODO: add price timesliceslice logic
 }
 
 

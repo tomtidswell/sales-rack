@@ -1,18 +1,7 @@
 <template>
-  <section class="scrapes">
-      <div class="section">
-          <div class="subtitle">Scrape History</div>
-      </div>
-    <div class="scrape-output">
-      <!-- <div v-for="scrape in scrapeData" :key="scrape._id" class="scrape">
-        <div class="retailer">{{scrape.retailer}}</div>
-        <div class="category">{{scrape.category}}</div>
-        <div class="success">{{scrape.success}}</div>
-        <div class="failure">{{scrape.failure}}</div>
-        <div class="total">{{scrape.totalProducts}}</div>
-      </div> -->
+  <section class="section">
+      <div class="subtitle">Scrape History</div>
       <b-table :data="scrapeData" :columns="columns"></b-table>
-    </div>
   </section>
 </template>
 

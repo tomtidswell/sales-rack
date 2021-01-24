@@ -2,7 +2,7 @@
   <b-navbar :mobile-burger="true">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
-        <header>SaleRack</header>
+        <header @click.meta.right="enableAdmin">SaleRack</header>
       </b-navbar-item>
     </template>
     <template slot="start">
@@ -24,9 +24,9 @@
           :to="{ path: `/retailer/${data.websafeName}` }"> {{data.displayName}} </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Admin" collapsible>
-        <b-navbar-item tag="router-link" :to="{ path: '/scraping/settings' }"> Scrape settings </b-navbar-item>
         <b-navbar-item tag="router-link" :to="{ path: '/scraping/history' }"> Scrape history </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: '/admin/categorymap' }"> Category map config </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/scraping/settings' }" v-if="admin"> Scrape settings </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/admin/categorymap' }" v-if="admin"> Category map config </b-navbar-item>
       </b-navbar-dropdown>
     </template>
 
@@ -53,6 +53,7 @@ export default {
   },
   data() {
     return {
+      admin: false,
       shop: null,
       category: null,
       filterOptions: [],
@@ -70,6 +71,10 @@ export default {
     },
   },
   methods: {
+    enableAdmin() {
+      console.log('Enabling admin')
+      this.admin = !this.admin
+    }
   },
 };
 </script>
