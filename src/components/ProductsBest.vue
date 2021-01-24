@@ -13,50 +13,10 @@
       </div>
     </section>
 
-    <section class="section">
-      <!-- <h1 class="title">We've found you some cracking deals</h1> -->
-      <h2 class="subtitle">Homeware deals</h2>
-      <b-carousel-list :data="productData.slice(0, 8)" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
-        <template slot="item" slot-scope="product">
-          <div class="image-header" v-if="product.header">I'm the header</div>
-          <Product v-else
-            class="best-product"
-            :data="product"
-            :key="product._id"
-          />
-        </template>
-      </b-carousel-list>
-    </section>
 
-
-    <section class="section">
-      <h2 class="subtitle">Kitchen deals</h2>
-      <b-carousel-list :data="kitchenDeals" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
-      <template slot="item" slot-scope="product">
-        <div class="image-header" v-if="product.header">Kitchen deals</div>
-        <Product v-else
-          class="best-product"
-          :data="product"
-          :key="product._id"
-        />
-      </template>
-      </b-carousel-list>
-    </section>
-
-
-
-    <section class="section">
-      <div class="subtitle">Tableware deals</div>
-      <b-carousel-list :data="productData.slice(18, 27)" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
-      <template slot="item" slot-scope="product">
-          <Product
-            class="best-product"
-            :data="product"
-            :key="product._id"
-          />
-      </template>
-      </b-carousel-list>
-    </section>
+    <ProductCarousel heading="Luggage deals" category="luggage" headerCard/>
+    <ProductCarousel heading="Tableware deals" category="tableware"/>
+    <ProductCarousel heading="Kitchenware deals" category="kitchen"/>
 
 
     <section class="section">
@@ -117,15 +77,13 @@
 </template>
 
 <script>
-import Product from "./Product.vue";
-// import ProductMini from "./ProductMini.vue";
-import Search from "./Search.vue";
+import ProductCarousel from "./ProductCarousel.vue"
+import Search from "./Search.vue"
 
 export default {
   name: "ProductsBest",
   components: {
-    Product,
-    // ProductMini,
+    ProductCarousel,
     Search,
   },
   props: {},
@@ -135,10 +93,10 @@ export default {
       productData: [],
       searchResults: [],
       searchFocussed: false,
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   mounted() {
     window.addEventListener('resize', this.onResize)
@@ -178,7 +136,7 @@ export default {
       this.searchResults = newSearchResults
     },
   },
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -189,32 +147,12 @@ a {
 .subtitle {
   font-size: 1.6rem;
 }
-section.products {
-  display: flex;
-  flex-direction: column;
-}
-
-.image-header{
-  background-image: url(../assets/kitchen.jpeg);
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  color: #ce3c3c;
-  font-size: 3em;
-  display: flex;
-  align-items: flex-start;
-  text-align: center;
-  letter-spacing: -2px;
-  text-shadow: 0px 0px 2px #84118c;
-  line-height: 1em;
-  padding-top: 40px;
-}
 
 .hero-body{
   transition: all 1s;
 }
 
-.search-results{
+/* .search-results{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 20px;
@@ -222,32 +160,7 @@ section.products {
   .search-result{
 
   }
-}
+} */
 
-.product-bubble {
-  padding: 10px 20px;
-  background-color: white;
-  border-radius: 10px;
-  .subtitle {
-    margin: 0;
-    font-size: 1.5em;
-  }
-}
-.scroller-wrap {
-  overflow-x: auto;
-  padding: 14px;
-}
-.scroller-content {
-  max-width: 100%;
-}
-.best-product {
-  min-width: 150px;
-}
-.more {
-  align-self: center;
-}
-.spacer {
-  padding: 10px;
-}
 
 </style>

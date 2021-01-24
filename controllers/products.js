@@ -63,7 +63,7 @@ function showHandler(req, res, next) {
 
 // EDIT / CREATE handler
 function editHandler(req, res, next) {
-    const { url, priceData } = req.body
+    const { url } = req.body
     if (!url) throw new Error('Bad request')
     Product
         //access the query parameters in the url using req.query
@@ -71,7 +71,7 @@ function editHandler(req, res, next) {
         .then(product => {
             if (!product) throw new Error('Not Found')
             // the force parameter will force a price update
-            product.addPrice(priceData, req.query.force === 'true')
+            product.addPrice(req.body, req.query.force === 'true')
             // if (product.id) delete product.id
             console.log('Saving:',product)
             return product.save()
