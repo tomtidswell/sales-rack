@@ -1,7 +1,7 @@
 <template>
   <div class="filters">
     <div class="field search-field">
-      <div class="icon">O</div>
+      <b-icon icon="magnify" size="is-medium" />
       <input class="input is-medium search-box" type="text" v-model="searchString" placeholder="Find some amazing deals..." 
              @input.prevent="debouncedSearch()" @focus="searchFocusHandler" @blur="searchFocusHandler"/>
       <div class="dropdown-content search-suggestions" v-if="searchString">

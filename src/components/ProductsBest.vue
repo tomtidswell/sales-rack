@@ -13,10 +13,39 @@
       </div>
     </section>
 
+    <section class="section half-split">
+      <article class="has-text">
+        <h2 class="subtitle">Luggage deals</h2>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit modi quis facilis mollitia eligendi a porro harum ipsum at sequi? Tenetur recusandae sed sint veniam in deserunt ut id cum!</p>
+      </article>
+      <article>
+        <ProductCarousel heading="Luggage deals" category="luggage" headerCard half/>
+      </article>
+    </section>
 
-    <ProductCarousel heading="Luggage deals" category="luggage" headerCard/>
-    <ProductCarousel heading="Tableware deals" category="tableware"/>
-    <ProductCarousel heading="Kitchenware deals" category="kitchen"/>
+
+    <section class="section half-split">
+      <article>
+          <ProductCarousel heading="Tableware deals" category="tableware"/>
+      </article>
+      <article class="has-text">
+        <h2 class="subtitle">Tableware deals</h2>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit modi quis facilis mollitia eligendi a porro harum ipsum at sequi? Tenetur recusandae sed sint veniam in deserunt ut id cum!</p>
+      </article>
+    </section>
+
+
+    <section class="section half-split">
+      <article class="has-text">
+        <h2 class="subtitle">Kitchenware deals</h2>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit modi quis facilis mollitia eligendi a porro harum ipsum at sequi? Tenetur recusandae sed sint veniam in deserunt ut id cum!</p>
+      </article>
+      <article>
+          <ProductCarousel heading="Kitchenware deals" category="kitchen"/>
+      </article>
+    </section>
+
+
 
 
     <section class="section">
@@ -145,11 +174,25 @@ a {
   color: #42b983;
 }
 .subtitle {
+  font-family: Arvo;
   font-size: 1.6rem;
+  letter-spacing: -1px;
 }
 
 .hero-body{
   transition: all 1s;
+}
+
+section.section.half-split{
+  display: flex;
+  align-items: center;
+  padding: 7.5rem 1.5rem;
+  article{
+    width: 50%;
+  }
+  article.has-text{
+    padding: 2em;
+  }
 }
 
 /* .search-results{

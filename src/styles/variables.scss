@@ -1,8 +1,10 @@
 
 @import "../../node_modules/bulma/sass/utilities/_all";
 
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Bungee+Shade&family=Fredericka+the+Great&family=JetBrains+Mono:wght@100&family=Pacifico&display=swap');
+
 // Set your colors
-$primary: #8bc0d4;
+$primary: #f81363;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
@@ -75,22 +77,31 @@ $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
+$navbar-height: 6rem;
+$navbar-item-color: black;
+$navbar-item-hover-color: black;
+$navbar-item-hover-background-color: transparent;
+$navbar-dropdown-item-hover-background-color: transparent;
+$navbar-dropdown-offset: -25px;
+
+$navbar-padding-horizontal: 2.5rem;
+$navbar-padding-vertival: 2rem;
 $navbar-breakpoint: $tablet;
 $section-padding: 1.5rem 1.5rem;
 
 $text: #333333;
 
-$carousel-arrow-color: black;
-$carousel-arrow-background: white;
+// $carousel-arrow-color: black;
+// $carousel-arrow-background: white;
 
-.mdi-chevron-right::before{
-    content: ">";
-    color: black;
-}
-.mdi-chevron-left::before{
-    content: "<";
-    color: black;
-}
+// .mdi-chevron-right::before{
+//     content: ">";
+//     color: black;
+// }
+// .mdi-chevron-left::before{
+//     content: "<";
+//     color: black;
+// }
 
 // Import Bulma and Buefy styles
 @import "~bulma";

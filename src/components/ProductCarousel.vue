@@ -1,6 +1,6 @@
 <template>
-  <section class="section">
-    <h2 class="subtitle">{{heading}}</h2>
+  <!-- <div :style="{ 'max-width':`100vw` }"> -->
+    <!-- <h2 class="subtitle">{{heading}}</h2> -->
     <b-carousel-list :data="productData" :items-to-show="showTiles" :arrow="true" :arrow-hover="false" :repeat="true">
       <template slot="item" slot-scope="product">
         <div class="image-header" v-if="product.header">Best {{category}} deals</div>
@@ -11,7 +11,7 @@
         />
       </template>
     </b-carousel-list>
-  </section>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -26,6 +26,7 @@ export default {
   },
   props: {
     headerCard: Boolean,
+    half: Boolean,
     heading: String,
     category: String
   },
@@ -50,7 +51,7 @@ export default {
   computed: {
     showTiles: function () {
       if(!this.windowWidth) return 4
-      return Math.floor(this.windowWidth / 200)
+      return Math.floor(this.windowWidth / 140)
     },
   },
   watch: {
@@ -68,6 +69,8 @@ export default {
       this.productData = this.headerCard ? [{header:true},...data] : data 
     },
     onResize(){
+      console.log(this.$el.clientWidth, this.$el)
+      console.log(this.$el.clientWidth, this.$el)
       this.windowWidth = this.$el.clientWidth
     },
   },
@@ -78,6 +81,9 @@ export default {
 <style lang="scss">
 .subtitle{
   font-size: 1.8rem;
+}
+.carousel-list{
+  max-width: 100vw;
 }
 .image-header{
   background-image: url(../assets/kitchen.jpeg);
