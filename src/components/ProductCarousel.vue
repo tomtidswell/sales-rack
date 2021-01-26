@@ -39,14 +39,15 @@ export default {
   },
   created() {
     this.getData()
+    this.debouncedResize = _.debounce(this.onResize.bind(this), 300)
   },
   mounted() {
-    window.addEventListener('resize', this.onResize)
-    this.onResize()
+    window.addEventListener('resize', this.debouncedResize)
+    this.debouncedResize()
   },
   beforeDestroy() {
     // Unregister the event listener before destroying this Vue instance
-    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('resize', this.debouncedResize)
   },
   computed: {
     showTiles: function () {
@@ -69,8 +70,6 @@ export default {
       this.productData = this.headerCard ? [{header:true},...data] : data 
     },
     onResize(){
-      console.log(this.$el.clientWidth, this.$el)
-      console.log(this.$el.clientWidth, this.$el)
       this.windowWidth = this.$el.clientWidth
     },
   },

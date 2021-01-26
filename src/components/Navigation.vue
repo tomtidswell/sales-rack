@@ -103,6 +103,7 @@ header.logo-set{
   .robot{
     font-family: 'Bungee Shade', cursive;
     padding-bottom: 4px;
+    letter-spacing: -2px;
   }
 }
 

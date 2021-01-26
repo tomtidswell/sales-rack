@@ -13,34 +13,35 @@
       </div>
     </section>
 
-    <section class="section half-split">
-      <article class="has-text">
+    <section class="section columns is-vcentered ">
+      <article class="column is-half">
         <h2 class="subtitle">Luggage deals</h2>
         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit modi quis facilis mollitia eligendi a porro harum ipsum at sequi? Tenetur recusandae sed sint veniam in deserunt ut id cum!</p>
       </article>
-      <article>
+      <article class="column is-half">
         <ProductCarousel heading="Luggage deals" category="luggage" headerCard half/>
       </article>
     </section>
 
 
-    <section class="section half-split">
-      <article>
+    <section class="section columns is-vcentered mobile-reorder">
+      <article class="column is-half">
           <ProductCarousel heading="Tableware deals" category="tableware"/>
       </article>
-      <article class="has-text">
+      <article class="column is-half">
         <h2 class="subtitle">Tableware deals</h2>
         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit modi quis facilis mollitia eligendi a porro harum ipsum at sequi? Tenetur recusandae sed sint veniam in deserunt ut id cum!</p>
+        <b-button type="" icon-right="arrow-right">Lots more to see</b-button>
       </article>
     </section>
 
 
-    <section class="section half-split">
-      <article class="has-text">
+    <section class="section columns is-vcentered ">
+      <article class="column is-half">
         <h2 class="subtitle">Kitchenware deals</h2>
         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit modi quis facilis mollitia eligendi a porro harum ipsum at sequi? Tenetur recusandae sed sint veniam in deserunt ut id cum!</p>
       </article>
-      <article>
+      <article class="column is-half">
           <ProductCarousel heading="Kitchenware deals" category="kitchen"/>
       </article>
     </section>
@@ -182,8 +183,11 @@ a {
 .hero-body{
   transition: all 1s;
 }
+article .button{
+  margin: 1em 0;
+}
 
-section.section.half-split{
+/* section.section.half-split{
   display: flex;
   align-items: center;
   padding: 7.5rem 1.5rem;
@@ -193,7 +197,7 @@ section.section.half-split{
   article.has-text{
     padding: 2em;
   }
-}
+} */
 
 /* .search-results{
   display: grid;
@@ -204,6 +208,17 @@ section.section.half-split{
 
   }
 } */
+
+@media screen and (max-width: 768px){
+  .mobile-reorder{
+    display: flex;
+    flex-direction: column-reverse;
+    *{
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+}
 
 
 </style>
