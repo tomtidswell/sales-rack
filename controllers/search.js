@@ -79,6 +79,67 @@ function bestHandler(req, res, next) {
         .catch(next)
 }
 
+// RETAILER handler
+function retailerHandler(req, res, next) {
+    const { retailer } = req.params
+    if (!retailer) {
+        return res.status(200).json([])
+    }
+    
+    console.log('retailer:', retailer)
+    // const now = new Date()
+    // const timeBoundary = new Date(Date.now() - (5000 * 60000)) // 5000 minutes
+    Product.aggregate()
+        .search({
+            "compound": {
+                "filter": [
+                    {
+                        text: {
+                            path: "retailer",
+                            query: retailer,
+                        }
+                    }
+                ],
+                "should": [
+                    {
+                        "near": {
+                            "path": "updatedAt",
+                            "origin": new Date(), //now
+                            "pivot": 86400000, //one day in ms - pivoting will reduce the score 
+                            // "gte": timeBoundary
+                            // score: { boost: { value: 2 } }
+                        },
+                    },
+                    {
+                        "near": {
+                            "path": "disc%",
+                            "origin": 100,
+                            "pivot": 20,
+                            // "score": { boost: { value: 10 } }
+                        },
+                    }
+                ]
+            }
+        })
+        .project({
+            "_id": 0,
+            "name": 1,
+            "image": 1,
+            "url": 1,
+            "updatedAt": 1,
+            "retailer": 1,
+            "price": 1,
+            "prevPrice": 1,
+            "category": 1,
+            "disc%": 1,
+            "disc£": 1,
+            "score": { "$meta": "searchScore" },
+        })
+        // .limit(10)
+        .then(results => res.status(200).json(results))
+        .catch(next)
+}
+
 // SEARCH handler
 function searchHandler(req, res, next) {
     if (!req.body || !req.body.length) {
@@ -202,4 +263,5 @@ module.exports = {
     keywords: keywordsHandler,
     best: bestHandler,
     search: searchHandler,
+    retailer: retailerHandler,
 }

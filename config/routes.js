@@ -24,7 +24,8 @@ router.route('/category/:category')
   .get(productController.categoryIndex)
 
 router.route('/retailer/:retailer')
-  .get(productController.retailerIndex)
+  // .get(productController.retailerIndex)
+  .get(searchController.retailer)
 
 router.route('/scrapes')
   .get(scrapeController.index)
