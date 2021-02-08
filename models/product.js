@@ -66,23 +66,25 @@ const productSchema = new mongoose.Schema({
 // })
 
 // helper function to handle adding a new price
-productSchema.methods.addPrice = function (forceUpdate) {
-    const { price, priceRange } = parsePrice(this.price)
-    const { price: prevPrice } = parsePrice(this.prevPrice)
-    console.log('Parsed prices:', price, priceRange)
+productSchema.methods.addPrice = function () {
+    // this function should be used to add a new price history slice for the product
+
+    // const { price, priceRange } = parsePrice(this.price)
+    // const { price: prevPrice } = parsePrice(this.prevPrice)
+    // console.log('Parsed prices:', price, priceRange)
     
-    if (priceRange) {
-        this.price = price
-        this.priceRange = priceRange
-    }
+    // if (priceRange) {
+    //     this.price = price
+    //     this.priceRange = priceRange
+    // }
     
-    //calculate the discount, and overwrite the incoming discount value (if any)
-    if (prevPrice && !priceRange){
-        const calcDiscount = 100 - Math.floor(price / prevPrice * 100) 
-        this['disc%'] = calcDiscount
-        this['disc£'] = prevPrice - price
-        console.log('Calculated discount:', this['disc%'], this['disc£'])
-    }
+    // //calculate the discount, and overwrite the incoming discount value (if any)
+    // if (prevPrice && !priceRange){
+    //     const calcDiscount = 100 - Math.floor(price / prevPrice * 100) 
+    //     this['disc%'] = calcDiscount
+    //     this['disc£'] = prevPrice - price
+    //     console.log('Calculated discount:', this['disc%'], this['disc£'])
+    // }
     
     // extract a discount from the savings message
     // if (priceData.badge && !priceData.discount){

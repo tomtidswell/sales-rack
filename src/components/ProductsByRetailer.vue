@@ -76,7 +76,7 @@ export default {
     },
     handleSort: function (e) {
       const [field, direction] = e
-      // console.log(field, direction)
+      console.log(field, direction)
       this.productData = _.orderBy(this.productDataResponse, field, direction)
     }
   },

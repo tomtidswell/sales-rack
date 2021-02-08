@@ -71,7 +71,7 @@ function editHandler(req, res, next) {
         .then(product => {
             if (!product) throw new Error('Not Found')
             // the force parameter will force a price update
-            product.addPrice(req.body, req.query.force === 'true')
+            // product.addPrice(req.body, req.query.force === 'true')
             // if (product.id) delete product.id
             console.log('Saving:',product)
             return product.save()

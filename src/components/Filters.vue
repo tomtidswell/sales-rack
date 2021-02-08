@@ -42,8 +42,7 @@ export default {
   },
   methods: {
     handleSort() {
-      this.sorting
-      this.$emit('sort', ['disc%', 'desc'])
+      this.$emit('sort', this.sortOptions[this.sorting].set)
     },
   },
 };
