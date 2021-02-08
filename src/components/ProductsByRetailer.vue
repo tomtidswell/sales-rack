@@ -70,8 +70,8 @@ export default {
       // console.log("Endpoint response:", res)
       this.productDataResponse = res.status === 200 ? await res.json() : []
       // console.log("Data:", this.productData)
-      this.productDataResponse = _.filter(this.productDataResponse, 'price') //make sure we have price data for the item
-      this.productData = _.orderBy(this.productDataResponse, 'price.discount.%','desc')
+      // this.productDataResponse = _.filter(this.productDataResponse, 'price') //make sure we have price data for the item
+      this.handleSort(['score', 'desc'])
       // console.log("Sorted data:", this.productData)
     },
     handleSort: function (e) {

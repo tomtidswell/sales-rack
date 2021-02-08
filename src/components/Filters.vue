@@ -1,11 +1,8 @@
 <template>
   <div class="filters">
     <div class="select">
-      <select v-model="sorting" @change="handleSort" >
-        <option value="percent-discount">Best discount (%)</option>
-        <option value="price-discount">Most money off (£)</option>
-        <option value="price-asc">Price ascending</option>
-        <option value="price-desc">Price descending</option>
+      <select v-model="sorting" @change="handleSort">
+        <option v-for="(opt, name) in sortOptions" :value="name" :key="name">{{opt.description}}</option>
       </select>
     </div>
     <label class="check-option" >
@@ -25,8 +22,15 @@ export default {
   data() {
     return {
       message: "Hello",
-      sorting: "percent-discount",
+      sorting: "default",
       filterOptions: [],
+      sortOptions: {
+        "default": { description: 'Recommended', set: ['score', 'desc']},
+        "percent-discount": { description: 'Best discount (%)', set: ['disc%', 'desc']},
+        "price-discount": { description: 'Most money off (£)', set: ['disc£', 'desc']},
+        "price-asc": { description: 'Price ascending', set: ['price', 'asc']},
+        "price-desc": { description: 'Price descending', set: ['disc£', 'desc']},
+      }
     };
   },
   created() {
@@ -38,20 +42,8 @@ export default {
   },
   methods: {
     handleSort() {
-      switch (this.sorting) {
-        case "price-discount":
-          this.$emit('sort', ['disc£', 'desc'])
-          break;
-        case "price-asc":
-          this.$emit('sort', ['price', 'asc'])
-          break;
-        case "price-desc":
-          this.$emit('sort', ['price', 'desc'])
-          break;
-        default:
-          this.$emit('sort', ['disc%', 'desc'])
-          break;
-      }
+      this.sorting
+      this.$emit('sort', ['disc%', 'desc'])
     },
   },
 };
